@@ -1,4 +1,4 @@
-package org.s2f.mb.logic;
+package org.s2f.mb.model.logic;
 
 public class Const {
     public static final String FOOD_TABLE = "food";

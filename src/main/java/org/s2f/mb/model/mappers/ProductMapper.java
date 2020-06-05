@@ -1,8 +1,8 @@
-package org.s2f.mb.mappers;
+package org.s2f.mb.model.mappers;
 
-import org.s2f.mb.DTO.Product;
+import org.s2f.mb.model.DTO.Product;
 import com.google.gson.Gson;
-import org.s2f.mb.entity.ProductEntity;
+import org.s2f.mb.model.entity.ProductEntity;
 
 public class ProductMapper {
 

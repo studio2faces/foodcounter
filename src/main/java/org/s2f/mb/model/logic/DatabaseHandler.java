@@ -1,4 +1,4 @@
-package org.s2f.mb.logic;
+package org.s2f.mb.model.logic;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

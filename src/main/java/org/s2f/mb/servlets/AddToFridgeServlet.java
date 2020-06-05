@@ -1,6 +1,6 @@
 package org.s2f.mb.servlets;
 
-import org.s2f.mb.logic.DatabaseHandler;
+import org.s2f.mb.model.logic.DatabaseHandler;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.ServletException;

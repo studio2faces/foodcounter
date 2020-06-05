@@ -1,4 +1,4 @@
-package org.s2f.mb.logic;
+package org.s2f.mb.model.logic;
 
 public class Configs {
     public String dbHost = "localhost";

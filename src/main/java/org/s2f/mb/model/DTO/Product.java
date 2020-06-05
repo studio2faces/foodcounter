@@ -1,4 +1,4 @@
-package org.s2f.mb.DTO;
+package org.s2f.mb.model.DTO;
 
 public class Product {
     private String productName;
