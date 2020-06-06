@@ -24,13 +24,13 @@ public class ShowAllServlet extends HttpServlet {
             ProductMapper pm = new ProductMapper();
             Product dto = null;
             while (res.next()) {
-                // response.getWriter().println(res.getString(Const.PRODUCT_NAME));
+                // response.getWriter().println(res.getString(Const.FT_NAME));
                 dto = new Product(
                         res.getString(2),
                         res.getInt(3),
                         res.getDouble(4),
                         res.getInt(5),
-                        res.getString(6)
+                        res.getBoolean(6)
                 );
 
                 response.getWriter().println(pm.mapperDtoToJson(dto));

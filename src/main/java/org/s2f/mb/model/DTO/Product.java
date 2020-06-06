@@ -1,41 +1,63 @@
 package org.s2f.mb.model.DTO;
 
 public class Product {
-    private String productName;
-    private int weightBy1g;
+    private String name;
+    private int weight;
     private double price;
+    private double priceFor1g;
     private int kcal100g;
-    private String isCooked; //'y','n'
+    private Boolean isCooked;
 
-    public Product(String productName, int weightBy1g, double price, int kcal100g, String isCooked) {
-        this.productName = productName;
-        this.weightBy1g = weightBy1g;
+    public Product(String name, int weight, double price, int kcal100g, Boolean isCooked) {
+        this.name = name;
+        this.weight = weight;
         this.price = price;
+        this.priceFor1g = price / weight;
         this.kcal100g = kcal100g;
         this.isCooked = isCooked;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public int getWeightBy1g() {
-        return weightBy1g;
+    public int getWeight() {
+        return weight;
     }
 
     public double getPrice() {
         return price;
     }
 
+    public double getPriceFor1g() {
+        return priceFor1g;
+    }
+
     public int getKcal100g() {
         return kcal100g;
     }
 
-    public String getIsCooked() {
+    public Boolean getIsCooked() {
         return isCooked;
     }
 
-    public void setIsCooked(String isCooked) {
-        this.isCooked = isCooked;
+    public void setPriceFor1g() {
+        this.priceFor1g = this.price / this.weight;
+    }
+
+    public void setCooked(Boolean cooked) {
+        isCooked = cooked;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", weight=" + weight +
+                ", price=" + price +
+                ", priceFor1g=" + priceFor1g +
+                ", kcal100g=" + kcal100g +
+                ", isCooked=" + isCooked +
+                '}';
     }
 }

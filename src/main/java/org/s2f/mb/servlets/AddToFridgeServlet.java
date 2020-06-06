@@ -1,6 +1,9 @@
 package org.s2f.mb.servlets;
 
+import org.json.simple.JSONObject;
+import org.s2f.mb.model.DTO.Product;
 import org.s2f.mb.model.logic.DatabaseHandler;
+import org.s2f.mb.model.mappers.ProductMapper;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.ServletException;
@@ -11,34 +14,22 @@ public class AddToFridgeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String productName = request.getParameter("productName");
-        int productWeight = Integer.parseInt(request.getParameter("productWeight"));
-        int productPrice = Integer.parseInt(request.getParameter("productPrice"));
-        int productKcal100g = Integer.parseInt(request.getParameter("productKcal"));
+        ProductMapper pm = new ProductMapper();
+        JSONObject jsonObject = pm.requestParamsToJSON(request);
+        String jsonStr = jsonObject.toJSONString();
+        System.out.println(jsonStr);
 
-        double priceBy1Gr = (productPrice * 1.0) / productWeight;
-        System.out.println("from do post " + productName);
+        Product p = pm.mapperJsonToDto(jsonObject.toJSONString());
+        p.setCooked(false);
+        System.out.println(p);
 
-        DatabaseHandler dbh = new DatabaseHandler();
-        dbh.addProduct(productName, productWeight, priceBy1Gr, productKcal100g);
+        new DatabaseHandler().addProduct(p);
 
-        response.getWriter().println(productName + " is added.");
+        response.getWriter().println(p.getName() + " is added.");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       /* String productName = request.getParameter("productName");
-        int productWeight = Integer.parseInt(request.getParameter("productWeight"));
-        int productPrice = Integer.parseInt(request.getParameter("productPrice"));
-        int productKcal100g = Integer.parseInt(request.getParameter("productKcal"));
-
-        double priceBy1Gr = (productPrice * 1.0) / productWeight;
-        System.out.println("from do get " + productName);
-
-        DatabaseHandler dbh = new DatabaseHandler();
-        dbh.addProduct(productName, productWeight, priceBy1Gr, productKcal100g);
-
-        response.getWriter().println(productName + " is added.");*/
 
     }
 
