@@ -1,7 +1,9 @@
 package org.s2f.mb.servlets;
 
+import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
 import org.s2f.mb.service.db.DBConnection;
+import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ProductMapper;
 
 import javax.servlet.http.HttpServlet;
@@ -13,13 +15,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ShowAllServlet extends HttpServlet {
+public class AddAndShowServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ProductMapper pm = new ProductMapper();
+        JSONObject jsonObject = pm.requestParamsToJSON(request);
+        String jsonStr = jsonObject.toJSONString();
+        System.out.println(jsonStr);
+
+        Product p = pm.mapperJsonToDto(jsonObject.toJSONString());
+        p.setCooked(false);
+        System.out.println(p);
+
+        new DatabaseHandler().addProduct(p);
+
+        response.getWriter().println(p.getName() + " is added.");
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-   //   DatabaseHandler dbh = new DatabaseHandler();
+        //   DatabaseHandler dbh = new DatabaseHandler();
         try {
-           // Statement stmt = dbh.getDbConnection().createStatement();
+            // Statement stmt = dbh.getDbConnection().createStatement();
             Connection connection = DBConnection.getInstance();
             Statement stmt = connection.createStatement();
             System.out.println("Connection - showAll");

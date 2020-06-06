@@ -8,30 +8,12 @@
   <display-name>Archetype Created Web Application</display-name>
 
   <servlet>
-    <servlet-name>show-all</servlet-name>
-    <jsp-file>/show-all.jsp</jsp-file>
+    <servlet-name>AddAndShowServlet</servlet-name>
+    <servlet-class>org.s2f.mb.servlets.AddAndShowServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>show-all</servlet-name>
-    <url-pattern>/show-all</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>AddToFridgeServlet</servlet-name>
-    <servlet-class>org.s2f.mb.servlets.AddToFridgeServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>AddToFridgeServlet</servlet-name>
-    <url-pattern>/AddToFridgeServlet</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>ShowAllServlet</servlet-name>
-    <servlet-class>org.s2f.mb.servlets.ShowAllServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ShowAllServlet</servlet-name>
-    <url-pattern>/ShowAllServlet</url-pattern>
+    <servlet-name>AddAndShowServlet</servlet-name>
+    <url-pattern>/AddAndShowServlet</url-pattern>
   </servlet-mapping>
 
   <resource-ref>

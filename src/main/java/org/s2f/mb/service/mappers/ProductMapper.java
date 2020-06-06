@@ -1,4 +1,4 @@
-package org.s2f.mb.model.mappers;
+package org.s2f.mb.service.mappers;
 
 import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
