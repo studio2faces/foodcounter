@@ -4,7 +4,7 @@ import org.s2f.mb.model.dto.Product;
 
 import java.sql.*;
 
-public class DatabaseHandler  {
+public class DatabaseHandler {
     Connection dbConnection;
 
     public Connection getDbConnection() throws ClassNotFoundException, SQLException {
@@ -16,15 +16,7 @@ public class DatabaseHandler  {
     }
 
     public void addProduct(Product p) {
-        String insert = "INSERT INTO "
-                + Const.FOOD_TABLE + "("
-                + Const.FT_NAME + ","
-                + Const.FT_WEIGHT + ","
-                + Const.FT_PRICE + ","
-                + Const.FT_PRICE1G + ","
-                + Const.FT_KCAL100 + ","
-                + Const.FT_ISCOOKED + ")"
-                + "VALUES(?,?,?,?,?,?)";
+        String insert = "INSERT INTO food (name, weight, price, priceFor1g, kcal, isCooked) VALUES (?,?,?,?,?,?)";
 
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(insert);
