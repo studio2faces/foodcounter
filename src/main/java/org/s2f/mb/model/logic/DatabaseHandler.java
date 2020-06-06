@@ -5,21 +5,12 @@ import org.s2f.mb.model.dto.Product;
 import java.sql.*;
 
 public class DatabaseHandler {
-    Connection dbConnection;
-
-    public Connection getDbConnection() throws ClassNotFoundException, SQLException {
-        String connectionString = "jdbc:mysql://localhost:3306/fridge_counter_db?useUnicode=true&serverTimezone=UTC&useSSL=true&verifyServerCertificate=false";
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        dbConnection = DriverManager.getConnection(connectionString, "root", "root");
-
-        return dbConnection;
-    }
 
     public void addProduct(Product p) {
         String insert = "INSERT INTO food (name, weight, price, priceFor1g, kcal, isCooked) VALUES (?,?,?,?,?,?)";
 
         try {
-            PreparedStatement prSt = getDbConnection().prepareStatement(insert);
+            PreparedStatement prSt = DBConnection.getInstance().prepareStatement(insert);
             System.out.println("Connection!!!");
             prSt.setString(1, p.getName());
             prSt.setInt(2, p.getWeight());
@@ -30,11 +21,9 @@ public class DatabaseHandler {
 
             prSt.executeUpdate();
 
-            getDbConnection().close();
+            prSt.close();
             System.out.println("Connection is closed.");
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
