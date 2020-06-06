@@ -1,33 +1,21 @@
 package org.s2f.mb.model.mappers;
 
 import org.json.simple.JSONObject;
-import org.s2f.mb.model.DTO.Product;
+import org.s2f.mb.model.dto.Product;
 import com.google.gson.Gson;
-import org.s2f.mb.model.entity.ProductEntity;
 
 import javax.servlet.ServletRequest;
 import java.util.Map;
 
 public class ProductMapper {
 
-    Gson gson = new Gson();
-
+    private Gson gson = new Gson();
 
     public Product mapperJsonToDto(String json) {
         Product product = gson.fromJson(json, Product.class);
         product.setPriceFor1g();
-      //  product.setCooked(false);
+        // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         return product;
-    }
-
-    public ProductEntity mapperDtoToEntity(Product dto) {
-        String json = gson.toJson(dto);
-        return gson.fromJson(json, ProductEntity.class);
-    }
-
-    public Product mapperEntityToDto(ProductEntity entity) {
-        String json = gson.toJson(entity);
-        return gson.fromJson(json, Product.class);
     }
 
     public String mapperDtoToJson(Product dto) {
@@ -44,5 +32,4 @@ public class ProductMapper {
         }
         return jsonObj;
     }
-
 }

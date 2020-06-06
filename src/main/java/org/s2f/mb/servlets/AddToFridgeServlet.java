@@ -1,7 +1,7 @@
 package org.s2f.mb.servlets;
 
 import org.json.simple.JSONObject;
-import org.s2f.mb.model.DTO.Product;
+import org.s2f.mb.model.dto.Product;
 import org.s2f.mb.model.logic.DatabaseHandler;
 import org.s2f.mb.model.mappers.ProductMapper;
 
@@ -27,10 +27,4 @@ public class AddToFridgeServlet extends HttpServlet {
 
         response.getWriter().println(p.getName() + " is added.");
     }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
 }

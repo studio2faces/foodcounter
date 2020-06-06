@@ -7,7 +7,6 @@
 
   <display-name>Archetype Created Web Application</display-name>
 
-
   <servlet>
     <servlet-name>show-all</servlet-name>
     <jsp-file>/show-all.jsp</jsp-file>

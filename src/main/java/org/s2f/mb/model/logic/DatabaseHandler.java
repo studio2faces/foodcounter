@@ -1,16 +1,16 @@
 package org.s2f.mb.model.logic;
 
-import org.s2f.mb.model.DTO.Product;
+import org.s2f.mb.model.dto.Product;
 
 import java.sql.*;
 
-public class DatabaseHandler extends Configs {
+public class DatabaseHandler  {
     Connection dbConnection;
 
     public Connection getDbConnection() throws ClassNotFoundException, SQLException {
         String connectionString = "jdbc:mysql://localhost:3306/fridge_counter_db?useUnicode=true&serverTimezone=UTC&useSSL=true&verifyServerCertificate=false";
         Class.forName("com.mysql.cj.jdbc.Driver");
-        dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
+        dbConnection = DriverManager.getConnection(connectionString, "root", "root");
 
         return dbConnection;
     }

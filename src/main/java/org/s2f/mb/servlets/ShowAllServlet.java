@@ -1,6 +1,6 @@
 package org.s2f.mb.servlets;
 
-import org.s2f.mb.model.DTO.Product;
+import org.s2f.mb.model.dto.Product;
 import org.s2f.mb.model.logic.Const;
 import org.s2f.mb.model.logic.DatabaseHandler;
 import org.s2f.mb.model.mappers.ProductMapper;
