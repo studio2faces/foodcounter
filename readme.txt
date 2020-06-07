@@ -22,7 +22,7 @@ CREATE TABLE `food` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
   `weight` int NOT NULL,
-  `price` double NOT NULL,
+  `priceFor1g` double NOT NULL,
   `kcal` int NOT NULL,
   `isCooked` varchar(1) NOT NULL DEFAULT 'n',
   PRIMARY KEY (`id`),
@@ -48,7 +48,7 @@ INSERT INTO food VALUES(null,'Juice', 1000, 0.1, 50, 'n');
 http://localhost:8888/add-to-fridge.html
 
 Добавить продукт в холодильник
-POST http://localhost:8888/AddToFridgeServlet?productName=Juice&productWeight=1000&productPrice=120&productKcal=50
+POST http://localhost:8888/AddToFridgeServlet?name=Juice&productWeight=1000&productPrice=120&productKcal=50
 
 Получить список продуктов из холодильника
 GET http://localhost:8888/ShowAllServlet
