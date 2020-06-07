@@ -13,8 +13,6 @@ public class ProductMapper {
 
     public Product mapperJsonToDto(String json) {
         Product product = gson.fromJson(json, Product.class);
-        product.setPriceFor1g();
-        // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         return product;
     }
 

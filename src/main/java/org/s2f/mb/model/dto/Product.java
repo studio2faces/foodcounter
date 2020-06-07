@@ -4,16 +4,14 @@ public class Product {
     private String name;
     private int weight;
     private double price;
-    private double priceFor1g;
-    private int kcal100g;
-    private Boolean isCooked;
+    private int kcal; //by 100g
+    private boolean isCooked;
 
-    public Product(String name, int weight, double price, int kcal100g, Boolean isCooked) {
+    public Product(String name, int weight, double price, int kcal, boolean isCooked) {
         this.name = name;
         this.weight = weight;
         this.price = price;
-        this.priceFor1g = price / weight;
-        this.kcal100g = kcal100g;
+        this.kcal = kcal;
         this.isCooked = isCooked;
     }
 
@@ -29,23 +27,19 @@ public class Product {
         return price;
     }
 
-    public double getPriceFor1g() {
-        return priceFor1g;
-    }
-
-    public int getKcal100g() {
-        return kcal100g;
+    public int getKcal() {
+        return kcal;
     }
 
     public Boolean getIsCooked() {
         return isCooked;
     }
 
-    public void setPriceFor1g() {
-        this.priceFor1g = this.price / this.weight;
+    public Double priceByOneGramm() {
+        return this.price / this.weight;
     }
 
-    public void setCooked(Boolean cooked) {
+    public void setCooked(boolean cooked) {
         isCooked = cooked;
     }
 
@@ -55,8 +49,7 @@ public class Product {
                 "name='" + name + '\'' +
                 ", weight=" + weight +
                 ", price=" + price +
-                ", priceFor1g=" + priceFor1g +
-                ", kcal100g=" + kcal100g +
+                ", kcal=" + kcal +
                 ", isCooked=" + isCooked +
                 '}';
     }
