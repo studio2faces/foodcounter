@@ -35,7 +35,7 @@ public class Product {
         return isCooked;
     }
 
-    public Double priceByOneGramm() {
+    public double priceByOneGramm() {
         return this.price / this.weight;
     }
 
