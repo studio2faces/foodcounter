@@ -29,7 +29,7 @@ public class AddAndShowServlet extends HttpServlet {
         Product p = pm.mapperJsonToDto(jsonObject.toJSONString());
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         p.setCooked(false);
-        log.info("{} is created.", p);
+        log.debug("{} is created.", p);
 
         new DatabaseHandler().addProduct(p);
 
@@ -72,7 +72,7 @@ public class AddAndShowServlet extends HttpServlet {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            log.info("Not connected to DB.");
+            log.error("Not connected to DB.", e);
             e.printStackTrace();
         }
     }

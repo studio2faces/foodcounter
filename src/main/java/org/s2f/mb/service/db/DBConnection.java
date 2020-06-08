@@ -1,10 +1,14 @@
 package org.s2f.mb.service.db;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
+    private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
     private static Connection dbc;
 
     private DBConnection() {
@@ -17,6 +21,7 @@ public class DBConnection {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 dbc = DriverManager.getConnection(connectionString, "root", "root");
             } catch (ClassNotFoundException | SQLException e) {
+                log.error("Wrong connection path.", e);
                 e.printStackTrace();
             }
         }
