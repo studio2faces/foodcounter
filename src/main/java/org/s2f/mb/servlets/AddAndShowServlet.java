@@ -6,6 +6,8 @@ import org.s2f.mb.model.dto.Product;
 import org.s2f.mb.service.db.DBConnection;
 import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ProductMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.ServletException;
@@ -16,18 +18,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class AddAndShowServlet extends HttpServlet {
+    private static final Logger log = LoggerFactory.getLogger(AddAndShowServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ProductMapper pm = new ProductMapper();
         JSONObject jsonObject = pm.requestParamsToJSON(request);
-        String jsonStr = jsonObject.toJSONString();
-        System.out.println(jsonStr);
-
+        log.info("Get JSON object: {}", jsonObject.toJSONString());
         Product p = pm.mapperJsonToDto(jsonObject.toJSONString());
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         p.setCooked(false);
-        System.out.println(p);
+        log.info("{} is created.", p);
 
         new DatabaseHandler().addProduct(p);
 
@@ -39,7 +40,7 @@ public class AddAndShowServlet extends HttpServlet {
 
         try {
             Statement stmt = DBConnection.getInstance().createStatement();
-            System.out.println("Connection - showAll");
+            log.info("Create a statement to DB - Show all products.");
             ResultSet res = stmt.executeQuery("SELECT * FROM food");
             ProductMapper pm = new ProductMapper();
             Product dto = null;
@@ -54,10 +55,12 @@ public class AddAndShowServlet extends HttpServlet {
                 );
                 jsonArray.add(pm.mapperDtoToJson(dto));
             }
-            response.getWriter().println("Json array:");
+            response.getWriter().println("JSON array:");
             response.getWriter().println(jsonArray);
             stmt.close();
+            log.info("Statement is closed.");
         } catch (SQLException e) {
+            log.info("Not connected to DB.");
             e.printStackTrace();
         }
     }
