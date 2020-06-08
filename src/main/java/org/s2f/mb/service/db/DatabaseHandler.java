@@ -15,6 +15,9 @@ public class DatabaseHandler {
         try {
             PreparedStatement prSt = DBConnection.getInstance().prepareStatement(insert);
 
+            DBConnection.getInstance().setAutoCommit(false);
+            DBConnection.getInstance().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
             log.info("Create a statement to DB - adding.");
             prSt.setString(1, p.getName());
             prSt.setInt(2, p.getWeight());
@@ -24,11 +27,17 @@ public class DatabaseHandler {
             prSt.setBoolean(6, p.getIsCooked());
 
             prSt.executeUpdate();
+            DBConnection.getInstance().commit();
             log.info("Product is added to DB.");
 
             prSt.close();
             log.info("Statement is closed.");
         } catch (SQLException e) {
+            try {
+                DBConnection.getInstance().rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             log.error("Not connected to DB.");
             e.printStackTrace();
         }

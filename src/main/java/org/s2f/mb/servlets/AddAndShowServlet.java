@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,6 +41,10 @@ public class AddAndShowServlet extends HttpServlet {
 
         try {
             Statement stmt = DBConnection.getInstance().createStatement();
+
+            DBConnection.getInstance().setAutoCommit(false);
+            DBConnection.getInstance().setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+
             log.info("Create a statement to DB - Show all products.");
             ResultSet res = stmt.executeQuery("SELECT * FROM food");
             ProductMapper pm = new ProductMapper();
@@ -57,9 +62,16 @@ public class AddAndShowServlet extends HttpServlet {
             }
             response.getWriter().println("JSON array:");
             response.getWriter().println(jsonArray);
+
+            DBConnection.getInstance().commit();
             stmt.close();
             log.info("Statement is closed.");
         } catch (SQLException e) {
+            try {
+                DBConnection.getInstance().rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             log.info("Not connected to DB.");
             e.printStackTrace();
         }
