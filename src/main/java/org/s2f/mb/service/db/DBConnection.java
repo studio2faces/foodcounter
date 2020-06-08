@@ -21,8 +21,7 @@ public class DBConnection {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 dbc = DriverManager.getConnection(connectionString, "root", "root");
             } catch (ClassNotFoundException | SQLException e) {
-                log.error("Wrong connection path.", e);
-                e.printStackTrace();
+                log.error("Exception {}", e);
             }
         }
         return dbc;

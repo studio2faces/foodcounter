@@ -38,8 +38,7 @@ public class DatabaseHandler {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            log.error("Not connected to DB.", e);
-            e.printStackTrace();
+            log.error("Exception {}", e);
         }
     }
 }
