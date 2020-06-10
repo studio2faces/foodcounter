@@ -5,22 +5,31 @@
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
-  <display-name>Archetype Created Web Application</display-name>
+    <display-name>Archetype Created Web Application</display-name>
 
-  <servlet>
-    <servlet-name>AddAndShowServlet</servlet-name>
-    <servlet-class>org.s2f.mb.servlets.AddAndShowServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>AddAndShowServlet</servlet-name>
-    <url-pattern>/AddAndShowServlet</url-pattern>
-  </servlet-mapping>
+    <servlet>
+        <servlet-name>AddAndShowServlet</servlet-name>
+        <servlet-class>org.s2f.mb.servlets.AddAndShowServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddAndShowServlet</servlet-name>
+        <url-pattern>/AddAndShowServlet</url-pattern>
+    </servlet-mapping>
 
-  <resource-ref>
-    <description>DB Connection</description>
-    <res-ref-name>jdbc/fridge_counter_db</res-ref-name>
-    <res-type>javax.sql.DataSource</res-type>
-    <res-auth>Container</res-auth>
-  </resource-ref>
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>org.s2f.mb.servlets.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/AddAndShowServlet</url-pattern>
+    </filter-mapping>
+
+    <resource-ref>
+        <description>DB Connection</description>
+        <res-ref-name>jdbc/fridge_counter_db</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
 
 </web-app>

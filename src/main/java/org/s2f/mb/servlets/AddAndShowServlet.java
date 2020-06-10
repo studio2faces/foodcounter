@@ -38,6 +38,7 @@ public class AddAndShowServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json");
 
         try {
             Statement stmt = DBConnection.getInstance().createStatement();
@@ -60,8 +61,8 @@ public class AddAndShowServlet extends HttpServlet {
                 );
                 jsonArray.add(pm.mapperDtoToJson(dto));
             }
-            response.getWriter().println("JSON array:");
-            response.getWriter().println(jsonArray);
+            response.getWriter().write(jsonArray.toJSONString());
+            response.getWriter().flush();
 
             DBConnection.getInstance().commit();
             stmt.close();
