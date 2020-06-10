@@ -34,12 +34,11 @@ public class AddAndShowServlet extends HttpServlet {
         new DatabaseHandler().addProduct(p);
 
         response.getWriter().println(p.getName() + " is added.");
-        response.getWriter().println("Привет");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
 
         try {
             Statement stmt = DBConnection.getInstance().createStatement();
@@ -62,8 +61,8 @@ public class AddAndShowServlet extends HttpServlet {
                 );
                 jsonArray.add(pm.mapperDtoToJson(dto));
             }
-            response.getWriter().println("JSON array:");
-            response.getWriter().println(jsonArray);
+            response.getWriter().write(jsonArray.toJSONString());
+            response.getWriter().flush();
 
             DBConnection.getInstance().commit();
             stmt.close();
@@ -77,6 +76,5 @@ public class AddAndShowServlet extends HttpServlet {
             log.error("Not connected to DB.", e);
             e.printStackTrace();
         }
-        response.getWriter().println("Привет");
     }
 }
