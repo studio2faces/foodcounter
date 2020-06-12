@@ -30,7 +30,14 @@ CREATE TABLE `food` (
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 ----
-Насчет последней строки не знаю что это такое, из Workbench, вдруг без нее не будет работать, поэтому не стала удалять
+Создать таблицу users
+CREATE TABLE `users` (
+  `users_uuid` varchar(36) NOT NULL,
+  `login` varchar(20) NOT NULL,
+  PRIMARY KEY (`users_uuid`),
+  UNIQUE KEY `login_UNIQUE` (`login`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 4. Запустить скрипт добавления тестовых продуктов
 INSERT INTO food VALUES(null,'Water', 1000, 0.03, 0, 'n');
@@ -44,6 +51,12 @@ INSERT INTO food VALUES(null,'Juice', 1000, 0.1, 50, 'n');
 Не знаю, что здесь писать
 
 7. Запросы
+
+Начинай с этой страницы:
+
+Авторизация пользователя
+POST http://localhost:8888/add-user.html
+
 Стартовая страница
 http://localhost:8888/add-to-fridge.html
 

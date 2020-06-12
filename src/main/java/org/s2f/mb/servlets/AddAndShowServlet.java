@@ -3,6 +3,7 @@ package org.s2f.mb.servlets;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
+import org.s2f.mb.service.LocalUser;
 import org.s2f.mb.service.db.DBConnection;
 import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ProductMapper;
@@ -17,6 +18,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.UUID;
 
 public class AddAndShowServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(AddAndShowServlet.class);
@@ -25,8 +27,10 @@ public class AddAndShowServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ProductMapper pm = new ProductMapper();
         JSONObject jsonObject = pm.requestParamsToJSON(request);
+        //   String uuid = (String) jsonObject.get("users_uuid");
         log.info("Get JSON object: {}", jsonObject.toJSONString());
-        Product p = pm.mapperJsonToDto(jsonObject.toJSONString());
+        Product p = pm.mapperJsonToProduct(jsonObject.toJSONString());
+        //  p.setUsers_uuid(uuid);
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         p.setCooked(false);
         log.debug("{} is created.", p);
@@ -47,7 +51,8 @@ public class AddAndShowServlet extends HttpServlet {
             DBConnection.getInstance().setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 
             log.info("Create a statement to DB - Show all products.");
-            ResultSet res = stmt.executeQuery("SELECT * FROM food");
+            ResultSet res = stmt.executeQuery("SELECT * FROM food ");
+          //  ResultSet res = stmt.executeQuery("SELECT * FROM food WHERE users_uuid='" + LocalUser.getLocalUser().get().getUuid().toString() + "'");
             ProductMapper pm = new ProductMapper();
             Product dto = null;
             JSONArray jsonArray = new JSONArray();
@@ -57,9 +62,10 @@ public class AddAndShowServlet extends HttpServlet {
                         res.getInt("weight"),
                         res.getDouble("price"),
                         res.getInt("kcal"),
-                        res.getBoolean("isCooked")
+                        res.getBoolean("isCooked"),
+                        UUID.fromString(res.getString("users_uuid"))
                 );
-                jsonArray.add(pm.mapperDtoToJson(dto));
+                jsonArray.add(pm.mapperProductToJson(dto));
             }
             response.getWriter().write(jsonArray.toJSONString());
             response.getWriter().flush();
