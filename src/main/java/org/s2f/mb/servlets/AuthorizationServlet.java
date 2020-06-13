@@ -1,10 +1,6 @@
 package org.s2f.mb.servlets;
 
-import org.json.simple.JSONObject;
-import org.s2f.mb.model.dto.User;
 import org.s2f.mb.service.LocalUser;
-import org.s2f.mb.service.db.DatabaseHandler;
-import org.s2f.mb.service.mappers.ProductMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

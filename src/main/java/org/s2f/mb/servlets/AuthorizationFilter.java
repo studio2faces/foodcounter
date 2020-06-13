@@ -14,7 +14,6 @@ import java.io.IOException;
 public class AuthorizationFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
 
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         response.setContentType("application/json");
@@ -37,7 +36,6 @@ public class AuthorizationFilter implements Filter {
         }
 
         response.getWriter().write(pm.mapperUsersUUIDToJson(user));
-
         filterChain.doFilter(request, response);
     }
 

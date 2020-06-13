@@ -3,7 +3,6 @@ package org.s2f.mb.servlets;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
-import org.s2f.mb.service.LocalUser;
 import org.s2f.mb.service.db.DBConnection;
 import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ProductMapper;
@@ -27,10 +26,9 @@ public class AddAndShowServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ProductMapper pm = new ProductMapper();
         JSONObject jsonObject = pm.requestParamsToJSON(request);
-        //   String uuid = (String) jsonObject.get("users_uuid");
         log.info("Get JSON object: {}", jsonObject.toJSONString());
+
         Product p = pm.mapperJsonToProduct(jsonObject.toJSONString());
-        //  p.setUsers_uuid(uuid);
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         p.setCooked(false);
         log.debug("{} is created.", p);
@@ -44,6 +42,10 @@ public class AddAndShowServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
+        ProductMapper pm = new ProductMapper();
+        JSONObject jsonObject = pm.requestParamsToJSON(request);
+        String uuid = (String) jsonObject.get("users_uuid");
+
         try {
             Statement stmt = DBConnection.getInstance().createStatement();
 
@@ -51,9 +53,8 @@ public class AddAndShowServlet extends HttpServlet {
             DBConnection.getInstance().setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 
             log.info("Create a statement to DB - Show all products.");
-            ResultSet res = stmt.executeQuery("SELECT * FROM food ");
-          //  ResultSet res = stmt.executeQuery("SELECT * FROM food WHERE users_uuid='" + LocalUser.getLocalUser().get().getUuid().toString() + "'");
-            ProductMapper pm = new ProductMapper();
+            ResultSet res = stmt.executeQuery("SELECT * FROM food WHERE users_uuid='" + uuid + "'");
+
             Product dto = null;
             JSONArray jsonArray = new JSONArray();
             while (res.next()) {

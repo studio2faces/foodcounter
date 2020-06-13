@@ -5,7 +5,6 @@ import org.s2f.mb.model.dto.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.jsp.jstl.sql.Result;
 import java.sql.*;
 import java.util.UUID;
 

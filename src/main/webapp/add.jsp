@@ -28,7 +28,11 @@
       </form>
 
       <br>
-      <a href="AddAndShowServlet">Show all products</a>
+      <br>
+      <form action="AddAndShowServlet" method="get">
+       <input type="hidden" name="users_uuid" value=<%=request.getAttribute("uuid")%>>
+       <input type="submit" value="Show all products">
+      </form>
 
    </body>
 </html>
