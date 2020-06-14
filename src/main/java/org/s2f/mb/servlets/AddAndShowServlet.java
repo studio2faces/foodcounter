@@ -3,7 +3,6 @@ package org.s2f.mb.servlets;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
-import org.s2f.mb.service.db.DBConnection;
 import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ProductMapper;
 import org.slf4j.Logger;
@@ -13,11 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.UUID;
 
 public class AddAndShowServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(AddAndShowServlet.class);
@@ -46,41 +40,9 @@ public class AddAndShowServlet extends HttpServlet {
         JSONObject jsonObject = pm.requestParamsToJSON(request);
         String uuid = (String) jsonObject.get("users_uuid");
 
-        try {
-            Statement stmt = DBConnection.getInstance().createStatement();
+        JSONArray jsonArray =  new DatabaseHandler().showAllProductsByUuid(uuid);
 
-            DBConnection.getInstance().setAutoCommit(false);
-            DBConnection.getInstance().setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-
-            log.info("Create a statement to DB - Show all products.");
-            ResultSet res = stmt.executeQuery("SELECT * FROM food WHERE users_uuid='" + uuid + "'");
-
-            Product dto = null;
-            JSONArray jsonArray = new JSONArray();
-            while (res.next()) {
-                dto = new Product(
-                        res.getString("name"),
-                        res.getInt("weight"),
-                        res.getDouble("price"),
-                        res.getInt("kcal"),
-                        res.getBoolean("isCooked"),
-                        UUID.fromString(res.getString("users_uuid"))
-                );
-                jsonArray.add(pm.mapperProductToJson(dto));
-            }
-            response.getWriter().write(jsonArray.toJSONString());
-            response.getWriter().flush();
-
-            DBConnection.getInstance().commit();
-            stmt.close();
-            log.info("Statement is closed.");
-        } catch (SQLException e) {
-            try {
-                DBConnection.getInstance().rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            log.error("Exception {}", e);
-        }
+        response.getWriter().write(jsonArray.toJSONString());
+        response.getWriter().flush();
     }
 }

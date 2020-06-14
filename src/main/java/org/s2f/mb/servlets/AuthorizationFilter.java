@@ -23,6 +23,7 @@ public class AuthorizationFilter implements Filter {
 
         User user = pm.mapperJsonToUser(jsonObject.toJSONString());
         user.setUuid(new DatabaseHandler().getUUIDByLogin(user.getLogin()));
+        log.debug("{}", user.toString());
 
         if (user.getUuid() == null) {
             log.info("New user.");
@@ -45,6 +46,5 @@ public class AuthorizationFilter implements Filter {
 
     @Override
     public void destroy() {
-
     }
 }

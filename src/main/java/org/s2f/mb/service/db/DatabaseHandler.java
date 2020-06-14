@@ -1,7 +1,9 @@
 package org.s2f.mb.service.db;
 
+import org.json.simple.JSONArray;
 import org.s2f.mb.model.dto.Product;
 import org.s2f.mb.model.dto.User;
+import org.s2f.mb.service.mappers.ProductMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +22,7 @@ public class DatabaseHandler {
             DBConnection.getInstance().setAutoCommit(false);
             DBConnection.getInstance().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
-            log.info("Create a statement to DB - adding.");
+            log.info("Create a statement to DB.");
             prSt.setString(1, p.getName());
             prSt.setInt(2, p.getWeight());
             prSt.setDouble(3, p.getPrice());
@@ -30,9 +32,10 @@ public class DatabaseHandler {
             prSt.setString(7, p.getUsers_uuid().toString());
 
             prSt.executeUpdate();
-            DBConnection.getInstance().commit();
-            log.info("Product is added to DB.");
 
+            DBConnection.getInstance().commit();
+            DBConnection.getInstance().setAutoCommit(true);
+            log.info("Product is added to DB.");
             prSt.close();
             log.info("Statement is closed.");
         } catch (SQLException e) {
@@ -41,7 +44,7 @@ public class DatabaseHandler {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            log.error("Exception {}", e);
+            log.error("SQL ERROR", e);
         }
     }
 
@@ -50,7 +53,7 @@ public class DatabaseHandler {
 
         try {
             PreparedStatement prSt = DBConnection.getInstance().prepareStatement(insert);
-            log.info("Create a statement to DB - User adding.");
+            log.info("Create a statement to DB.");
 
             DBConnection.getInstance().setAutoCommit(false);
             DBConnection.getInstance().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
@@ -60,6 +63,7 @@ public class DatabaseHandler {
 
             prSt.executeUpdate();
             DBConnection.getInstance().commit();
+            DBConnection.getInstance().setAutoCommit(true);
             log.info("User {} is added to DB.", user.getLogin());
             prSt.close();
             log.info("Statement is closed.");
@@ -69,7 +73,7 @@ public class DatabaseHandler {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            log.error("Exception {}", e);
+            log.error("SQL ERROR", e);
         }
     }
 
@@ -79,15 +83,21 @@ public class DatabaseHandler {
             Statement st = DBConnection.getInstance().createStatement();
             DBConnection.getInstance().setAutoCommit(false);
 
-            ResultSet res = st.executeQuery("SELECT login FROM users WHERE users_uuid='" + uuid.toString() + "'");
+            ResultSet res = st.executeQuery("SELECT login FROM users WHERE users_uuid='" + uuid.toString() + "' LIMIT 1");
             while (res.next()) {
                 user = new User(res.getString("login"), uuid);
             }
 
             DBConnection.getInstance().commit();
+            DBConnection.getInstance().setAutoCommit(true);
             st.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+                DBConnection.getInstance().rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            log.error("SQL ERROR", e);
         }
         return user;
     }
@@ -102,14 +112,66 @@ public class DatabaseHandler {
             while (res.next()) {
                 String uuidString = res.getString("users_uuid");
                 uuid = UUID.fromString(uuidString);
-                log.debug("DBH: uuid = {}", uuid);
+                log.debug("uuid = {}", uuid);
             }
             DBConnection.getInstance().commit();
+            DBConnection.getInstance().setAutoCommit(true);
             st.close();
         } catch (SQLException e) {
-            log.error("SQL ERROR in DBH:getUUIDByLogin(String login)", e);
+            try {
+                DBConnection.getInstance().rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            log.error("SQL ERROR", e);
         }
 
         return uuid;
+    }
+
+    public JSONArray showAllProductsByUuid(String uuid) {
+        //вчера начала писать этот метод
+        String select = "SELECT * FROM food WHERE users_uuid=?";
+        JSONArray jsonArray = new JSONArray();
+        Product product = null;
+
+        try {
+            PreparedStatement ps = DBConnection.getInstance().prepareStatement(select);
+            log.info("Create a statement to DB.");
+
+            DBConnection.getInstance().setAutoCommit(false);
+            DBConnection.getInstance().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
+            ps.setString(1, uuid);
+
+            ResultSet res = ps.executeQuery();
+
+            while (res.next()) {
+                product = new Product(
+                        res.getString("name"),
+                        res.getInt("weight"),
+                        res.getDouble("price"),
+                        res.getInt("kcal"),
+                        res.getBoolean("isCooked"),
+                        UUID.fromString(res.getString("users_uuid"))
+                );
+                jsonArray.add(new ProductMapper().mapperProductToJson(product));
+                log.debug("Product {}", product.getName());
+            }
+
+            DBConnection.getInstance().commit();
+            DBConnection.getInstance().setAutoCommit(true);
+            ps.close();
+            log.info("Statement is closed.");
+
+        } catch (SQLException e) {
+            try {
+                DBConnection.getInstance().rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            log.error("SQL ERROR", e);
+        }
+        return jsonArray;
     }
 }
