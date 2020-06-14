@@ -1,5 +1,4 @@
-DROP DATABASE IF EXISTS fridge_counter_db;
-CREATE DATABASE fridge_counter_db;
+USE fridge_counter_db;
 
 DROP TABLE IF EXISTS food;
 DROP TABLE IF EXISTS users;
