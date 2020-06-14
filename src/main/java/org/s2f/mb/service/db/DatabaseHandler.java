@@ -3,7 +3,8 @@ package org.s2f.mb.service.db;
 import org.json.simple.JSONArray;
 import org.s2f.mb.model.dto.Product;
 import org.s2f.mb.model.dto.User;
-import org.s2f.mb.service.mappers.ProductMapper;
+import org.s2f.mb.service.LocalUser;
+import org.s2f.mb.service.mappers.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,7 @@ public class DatabaseHandler {
     private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
 
     public void addProduct(Product p) {
+        //  log.info("Local user: {}", LocalUser.getLoggedUser().toString());
         String insert = "INSERT INTO food (name, weight, price, priceByOneGramm, kcal, isCooked, users_uuid) VALUES (?,?,?,?,?,?,?)";
 
         try {
@@ -30,12 +32,13 @@ public class DatabaseHandler {
             prSt.setInt(5, p.getKcal());
             prSt.setBoolean(6, p.getIsCooked());
             prSt.setString(7, p.getUsers_uuid().toString());
+            //   prSt.setString(7, LocalUser.getLoggedUser().getUuid().toString());
 
             prSt.executeUpdate();
 
             DBConnection.getInstance().commit();
             DBConnection.getInstance().setAutoCommit(true);
-            log.info("Product is added to DB.");
+            log.info("Product {} is added to DB.", p.getName());
             prSt.close();
             log.info("Statement is closed.");
         } catch (SQLException e) {
@@ -77,7 +80,7 @@ public class DatabaseHandler {
         }
     }
 
-    public User getUserByUUID(UUID uuid) {
+    public User getuserbyUuid(UUID uuid) {
         User user = null;
         try {
             Statement st = DBConnection.getInstance().createStatement();
@@ -155,8 +158,8 @@ public class DatabaseHandler {
                         res.getBoolean("isCooked"),
                         UUID.fromString(res.getString("users_uuid"))
                 );
-                jsonArray.add(new ProductMapper().mapperProductToJson(product));
-                log.debug("Product {}", product.getName());
+                jsonArray.add(new ObjectMapper().productToJson(product));
+                log.debug("Show product {}", product.getName());
             }
 
             DBConnection.getInstance().commit();

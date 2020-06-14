@@ -11,11 +11,16 @@ public class User {
         this.uuid = uuid;
     }
 
-    public void setUuid() {
+    public User(String login) {
+        this.login = login;
+        uuid = UUID.randomUUID();
+    }
+
+    public void generateUuid() {
         this.uuid = UUID.randomUUID();
     }
 
-    public void setUuid(UUID uuid) {
+    public void generateUuid(UUID uuid) {
         this.uuid = uuid;
     }
 

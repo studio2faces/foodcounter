@@ -8,25 +8,25 @@ import org.s2f.mb.model.dto.User;
 import javax.servlet.ServletRequest;
 import java.util.Map;
 
-public class ProductMapper {
+public class ObjectMapper {
 
     private Gson gson = new Gson();
 
-    public Product mapperJsonToProduct(String json) {
+    public Product jsonToProduct(String json) {
         Product product = gson.fromJson(json, Product.class);
         return product;
     }
 
-    public String mapperProductToJson(Product dto) {
+    public String productToJson(Product dto) {
         return gson.toJson(dto);
     }
 
-    public User mapperJsonToUser(String json) {
+    public User jsonToUser(String json) {
         User user = gson.fromJson(json, User.class);
         return user;
     }
 
-    public String mapperUsersUUIDToJson(User user) {
+    public String userUuidToJson(User user) {
         return gson.toJson(user.getUuid());
     }
 

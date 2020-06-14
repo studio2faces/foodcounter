@@ -4,7 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
 import org.s2f.mb.service.db.DatabaseHandler;
-import org.s2f.mb.service.mappers.ProductMapper;
+import org.s2f.mb.service.mappers.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,11 +18,11 @@ public class AddAndShowServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ProductMapper pm = new ProductMapper();
+        ObjectMapper pm = new ObjectMapper();
         JSONObject jsonObject = pm.requestParamsToJSON(request);
         log.info("Get JSON object: {}", jsonObject.toJSONString());
 
-        Product p = pm.mapperJsonToProduct(jsonObject.toJSONString());
+        Product p = pm.jsonToProduct(jsonObject.toJSONString());
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         p.setCooked(false);
         log.debug("{} is created.", p);
@@ -36,7 +36,7 @@ public class AddAndShowServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
-        ProductMapper pm = new ProductMapper();
+        ObjectMapper pm = new ObjectMapper();
         JSONObject jsonObject = pm.requestParamsToJSON(request);
         String uuid = (String) jsonObject.get("users_uuid");
 

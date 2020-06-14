@@ -11,8 +11,8 @@ import java.io.IOException;
 public class AuthorizationServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("login", LocalUser.getLocalUser().get().getLogin());
-        request.setAttribute("uuid", LocalUser.getLocalUser().get().getUuid().toString());
+        request.setAttribute("login", LocalUser.getLoggedUser().getLogin());
+        request.setAttribute("uuid", LocalUser.getLoggedUser().getUuid().toString());
         this.getServletContext().getRequestDispatcher("/add.jsp").forward(request, response);
     }
 
