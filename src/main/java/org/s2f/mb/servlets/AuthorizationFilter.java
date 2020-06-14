@@ -10,33 +10,30 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import java.io.IOException;
+import java.util.UUID;
 
 public class AuthorizationFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        response.setContentType("application/json");
+        ObjectMapper om = new ObjectMapper();
+        JSONObject jsonObject = om.requestParamsToJSON(request);
+        String uuid = (String) jsonObject.get("users_uuid");
 
-        ObjectMapper pm = new ObjectMapper();
-        JSONObject jsonObject = pm.requestParamsToJSON(request);
+        if (uuid != null) {
 
-        User user = pm.jsonToUser(jsonObject.toJSONString());
-        user.generateUuid(new DatabaseHandler().getUUIDByLogin(user.getLogin()));
-        log.debug("Authorization: {}", user.toString());
-
-        if (user.getUuid() == null) {
-            log.info("New user.");
-            user.generateUuid();
-            new DatabaseHandler().addUser(user);
-            LocalUser.setLoggedUser(user);
-            log.debug("New User. LocalUser = {}", LocalUser.getLoggedUser().toString());
+            try {
+                User loggedUser = new DatabaseHandler().getuserbyUuid(UUID.fromString(uuid));
+                log.debug("Authorized {}", loggedUser.toString());
+                LocalUser.setLoggedUser(loggedUser);
+            } catch (NullPointerException e) {
+                log.debug("Incorrect uuid.");
+            }
         } else {
-            LocalUser.setLoggedUser(new DatabaseHandler().getuserbyUuid(user.getUuid()));
-            log.debug("User exists. LocalUser = {}", LocalUser.getLoggedUser().toString());
+            log.error("User is null");
         }
 
-        response.getWriter().write(pm.userUuidToJson(user));
         filterChain.doFilter(request, response);
     }
 

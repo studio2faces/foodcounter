@@ -20,7 +20,7 @@ public class User {
         this.uuid = UUID.randomUUID();
     }
 
-    public void generateUuid(UUID uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 

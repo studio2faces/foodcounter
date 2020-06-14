@@ -15,7 +15,6 @@ public class DatabaseHandler {
     private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
 
     public void addProduct(Product p) {
-        //  log.info("Local user: {}", LocalUser.getLoggedUser().toString());
         String insert = "INSERT INTO food (name, weight, price, priceByOneGramm, kcal, isCooked, users_uuid) VALUES (?,?,?,?,?,?,?)";
 
         try {
@@ -31,8 +30,7 @@ public class DatabaseHandler {
             prSt.setDouble(4, p.priceByOneGramm());
             prSt.setInt(5, p.getKcal());
             prSt.setBoolean(6, p.getIsCooked());
-            prSt.setString(7, p.getUsers_uuid().toString());
-            //   prSt.setString(7, LocalUser.getLoggedUser().getUuid().toString());
+            prSt.setString(7, LocalUser.getLoggedUser().getUuid().toString());
 
             prSt.executeUpdate();
 
@@ -98,9 +96,9 @@ public class DatabaseHandler {
             try {
                 DBConnection.getInstance().rollback();
             } catch (SQLException e1) {
-                e1.printStackTrace();
+                log.error("SQL error", e1);
             }
-            log.error("SQL ERROR", e);
+            log.error("No user in DB with uuid {}.", uuid, e);
         }
         return user;
     }
@@ -124,7 +122,7 @@ public class DatabaseHandler {
             try {
                 DBConnection.getInstance().rollback();
             } catch (SQLException e1) {
-                e1.printStackTrace();
+                log.error("SQL ERROR", e1);
             }
             log.error("SQL ERROR", e);
         }
@@ -133,7 +131,6 @@ public class DatabaseHandler {
     }
 
     public JSONArray showAllProductsByUuid(String uuid) {
-        //вчера начала писать этот метод
         String select = "SELECT * FROM food WHERE users_uuid=?";
         JSONArray jsonArray = new JSONArray();
         Product product = null;

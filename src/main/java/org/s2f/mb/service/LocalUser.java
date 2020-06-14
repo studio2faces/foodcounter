@@ -11,13 +11,13 @@ public class LocalUser {
     private final static ThreadLocal<User> LOCAL_USER = new ThreadLocal<>();
 
     public static User getLoggedUser() {
-        log.debug("LocalUser = {}", LOCAL_USER.get());
+        log.debug("LocalUser = {}", LOCAL_USER.get().getLogin());
         return LOCAL_USER.get();
     }
 
     public static void setLoggedUser(User user) {
         LOCAL_USER.set(user);
-        log.debug("LocalUser = {}", LOCAL_USER);
+        log.debug("LocalUser = {}", LOCAL_USER.get().getLogin());
     }
 
 }

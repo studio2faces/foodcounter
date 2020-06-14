@@ -52,16 +52,18 @@ INSERT INTO food VALUES(null,'Juice', 1000, 0.1, 50, 'n');
 
 7. Запросы
 
-Начинай с этой страницы:
+Логин:
+POST http://localhost:8888/AuthorizationServlet?login=Dasha
 
-Авторизация пользователя
-POST http://localhost:8888/add-user.html
+Добавить продукт:
+POST http://localhost:8888/AddAndShowServlet?name=Milk&weight=200&price=80&kcal=500&users_uuid=4856190a-03c6-4c7c-8da2-89353a4a83ca
 
-Стартовая страница
-http://localhost:8888/add-to-fridge.html
+Получить содержимое холодильника пользователя:
+(correct uuid)
+GET http://localhost:8888/AddAndShowServlet?users_uuid=b7aeba0d-af13-4366-91d2-e37cd47eac28
 
-Добавить продукт в холодильник
-POST http://localhost:8888/AddToFridgeServlet?name=Juice&productWeight=1000&productPrice=120&productKcal=50
+(uuid=null)
+GET http://localhost:8888/AddAndShowServlet?
 
-Получить список продуктов из холодильника
-GET http://localhost:8888/ShowAllServlet
+(incorrect uuid)
+GET http://localhost:8888/AddAndShowServlet?users_uuid=4852230a-0000-0000-8da2-89353a4a83ca
