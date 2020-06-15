@@ -2,6 +2,7 @@ package org.s2f.mb.servlets;
 
 import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.User;
+import org.s2f.mb.service.Injector;
 import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ObjectMapper;
 import org.slf4j.Logger;
@@ -15,27 +16,33 @@ import java.io.IOException;
 
 public class AuthorizationServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
+    private ObjectMapper om;
+    private DatabaseHandler dbh;
+
+    public AuthorizationServlet() {
+        om = Injector.getObjectMapper();
+        dbh = Injector.getDatabaseHandler();
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
-        ObjectMapper pm = new ObjectMapper();
-        JSONObject jsonObject = pm.requestParamsToJSON(request);
+        JSONObject jsonObject = om.requestParamsToJSON(request);
 
-        User user = pm.jsonToUser(jsonObject.toJSONString());
-        user.setUuid(new DatabaseHandler().getUUIDByLogin(user.getLogin()));
+        User user = om.jsonToUser(jsonObject.toJSONString());
+        user.setUuid(dbh.getUUIDByLogin(user.getLogin()));
         log.debug("Authorization: {}", user.toString());
 
         if (user.getUuid() == null) {
             log.info("New user.");
             user.generateUuid();
-            new DatabaseHandler().addUser(user);
+            dbh.addUser(user);
             log.debug("New user - {}", user.toString());
         } else {
             log.debug("User exists - {}", user.toString());
         }
 
-        response.getWriter().write(pm.userUuidToJson(user));
+        response.getWriter().write(om.userUuidToJson(user));
     }
 }

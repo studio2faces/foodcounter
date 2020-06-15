@@ -2,6 +2,7 @@ package org.s2f.mb.servlets;
 
 import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.User;
+import org.s2f.mb.service.Injector;
 import org.s2f.mb.service.LocalUser;
 import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ObjectMapper;
@@ -14,24 +15,30 @@ import java.util.UUID;
 
 public class AuthorizationFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
+    private ObjectMapper om;
+    private DatabaseHandler dbh;
+
+    public AuthorizationFilter() {
+        om = Injector.getObjectMapper();
+        dbh = Injector.getDatabaseHandler();
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        ObjectMapper om = new ObjectMapper();
         JSONObject jsonObject = om.requestParamsToJSON(request);
         String uuid = (String) jsonObject.get("users_uuid");
 
         if (uuid != null) {
 
             try {
-                User loggedUser = new DatabaseHandler().getuserbyUuid(UUID.fromString(uuid));
+                User loggedUser = dbh.getuserbyUuid(UUID.fromString(uuid));
                 log.debug("Authorized {}", loggedUser.toString());
                 LocalUser.setLoggedUser(loggedUser);
             } catch (NullPointerException e) {
-                log.debug("Incorrect uuid.");
+                log.debug("Incorrect uuid.", e);
             }
         } else {
-            log.error("User is null");
+            log.error("User is null.");
         }
 
         filterChain.doFilter(request, response);
