@@ -8,15 +8,15 @@ public class Product {
     private double price;
     private int kcal; //by 100g
     private boolean isCooked;
-    private UUID users_uuid;
+    private String uuid;
 
-    public Product(String name, int weight, double price, int kcal, boolean isCooked, UUID users_uuid) {
+    public Product(String name, int weight, double price, int kcal, boolean isCooked, String uuid) {
         this.name = name;
         this.weight = weight;
         this.price = price;
         this.kcal = kcal;
         this.isCooked = isCooked;
-        this.users_uuid = users_uuid;
+        this.uuid = uuid;
     }
 
     public String getName() {
@@ -47,8 +47,8 @@ public class Product {
         isCooked = cooked;
     }
 
-    public UUID getUsers_uuid() {
-        return users_uuid;
+    public String getUsers_uuid() {
+        return uuid;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class Product {
                 ", price=" + price +
                 ", kcal=" + kcal +
                 ", isCooked=" + isCooked +
-                ", users_uuid=" + users_uuid +
+                ", users_uuid=" + uuid +
                 '}';
     }
 }

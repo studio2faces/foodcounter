@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import java.io.IOException;
-import java.util.UUID;
 
 public class AuthorizationFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
@@ -31,17 +30,19 @@ public class AuthorizationFilter implements Filter {
         if (uuid != null) {
 
             try {
-                User loggedUser = databaseHandler.getuserbyUuid(UUID.fromString(uuid));
+                User loggedUser = databaseHandler.getUserByUuid(uuid);
                 log.debug("Authorized {}", loggedUser.toString());
                 LocalUser.setLoggedUser(loggedUser);
-            } catch (NullPointerException e) {
-                log.debug("Incorrect uuid.", e);
+
+                filterChain.doFilter(request, response);
+
+            } catch (Exception e) {
+                //в случае, если uuid не null, но в БД нет такого user. Какого типа сюда надо exception?
+                log.debug("Incorrect uuid.");
             }
         } else {
-            log.error("User is null.");
+            log.error("Uuid is null.");
         }
-
-        filterChain.doFilter(request, response);
     }
 
     @Override

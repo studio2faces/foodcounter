@@ -43,7 +43,7 @@ public class AddAndShowServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
 
-        JSONArray jsonArray = databaseHandler.showAllProductsByUuid(LocalUser.getLoggedUser().getUuid().toString());
+        JSONArray jsonArray = databaseHandler.showAllProductsByUuid(LocalUser.getLoggedUser().getUuid());
 
         response.getWriter().write(jsonArray.toJSONString());
         response.getWriter().flush();
