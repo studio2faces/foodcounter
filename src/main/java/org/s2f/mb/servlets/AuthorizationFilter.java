@@ -15,23 +15,23 @@ import java.util.UUID;
 
 public class AuthorizationFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
-    private ObjectMapper om;
-    private DatabaseHandler dbh;
+    private ObjectMapper mapper;
+    private DatabaseHandler databaseHandler;
 
     public AuthorizationFilter() {
-        om = Injector.getObjectMapper();
-        dbh = Injector.getDatabaseHandler();
+        mapper = Injector.getObjectMapper();
+        databaseHandler = Injector.getDatabaseHandler();
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        JSONObject jsonObject = om.requestParamsToJSON(request);
+        JSONObject jsonObject = mapper.requestParamsToJSON(request);
         String uuid = (String) jsonObject.get("users_uuid");
 
         if (uuid != null) {
 
             try {
-                User loggedUser = dbh.getuserbyUuid(UUID.fromString(uuid));
+                User loggedUser = databaseHandler.getuserbyUuid(UUID.fromString(uuid));
                 log.debug("Authorized {}", loggedUser.toString());
                 LocalUser.setLoggedUser(loggedUser);
             } catch (NullPointerException e) {

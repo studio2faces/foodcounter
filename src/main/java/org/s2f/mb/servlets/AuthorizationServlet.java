@@ -16,33 +16,33 @@ import java.io.IOException;
 
 public class AuthorizationServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
-    private ObjectMapper om;
-    private DatabaseHandler dbh;
+    private ObjectMapper mapper;
+    private DatabaseHandler databaseHandler;
 
     public AuthorizationServlet() {
-        om = Injector.getObjectMapper();
-        dbh = Injector.getDatabaseHandler();
+        mapper = Injector.getObjectMapper();
+        databaseHandler = Injector.getDatabaseHandler();
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
-        JSONObject jsonObject = om.requestParamsToJSON(request);
+        JSONObject jsonObject = mapper.requestParamsToJSON(request);
 
-        User user = om.jsonToUser(jsonObject.toJSONString());
-        user.setUuid(dbh.getUUIDByLogin(user.getLogin()));
+        User user = mapper.jsonToUser(jsonObject.toJSONString());
+        user.setUuid(databaseHandler.getUUIDByLogin(user.getLogin()));
         log.debug("Authorization: {}", user.toString());
 
         if (user.getUuid() == null) {
             log.info("New user.");
             user.generateUuid();
-            dbh.addUser(user);
+            databaseHandler.addUser(user);
             log.debug("New user - {}", user.toString());
         } else {
             log.debug("User exists - {}", user.toString());
         }
 
-        response.getWriter().write(om.userUuidToJson(user));
+        response.getWriter().write(mapper.userUuidToJson(user));
     }
 }

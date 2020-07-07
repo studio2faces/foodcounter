@@ -10,32 +10,31 @@ import org.s2f.mb.service.mappers.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
 public class AddAndShowServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(AddAndShowServlet.class);
-    private ObjectMapper om;
-    private DatabaseHandler dbh;
+    private ObjectMapper mapper;
+    private DatabaseHandler databaseHandler;
 
     public AddAndShowServlet() {
-        om = Injector.getObjectMapper();
-        dbh = Injector.getDatabaseHandler();
+        mapper = Injector.getObjectMapper();
+        databaseHandler = Injector.getDatabaseHandler();
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        JSONObject jsonObject = om.requestParamsToJSON(request);
+        JSONObject jsonObject = mapper.requestParamsToJSON(request);
         log.info("Get JSON object: {}", jsonObject.toJSONString());
 
-        Product p = om.jsonToProduct(jsonObject.toJSONString());
+        Product p = mapper.jsonToProduct(jsonObject.toJSONString());
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         p.setCooked(false);
         log.debug("{} is created.", p);
 
-        dbh.addProduct(p);
+        databaseHandler.addProduct(p);
 
         response.getWriter().println(p.getName() + " is added by " + LocalUser.getLoggedUser().getLogin() + ".");
     }
@@ -44,7 +43,7 @@ public class AddAndShowServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
 
-        JSONArray jsonArray = dbh.showAllProductsByUuid(LocalUser.getLoggedUser().getUuid().toString());
+        JSONArray jsonArray = databaseHandler.showAllProductsByUuid(LocalUser.getLoggedUser().getUuid().toString());
 
         response.getWriter().write(jsonArray.toJSONString());
         response.getWriter().flush();

@@ -4,20 +4,20 @@ import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ObjectMapper;
 
 public class Injector {
-    private static ObjectMapper om;
-    private static DatabaseHandler dth;
+    private static ObjectMapper mapper;
+    private static DatabaseHandler databaseHandler;
 
     public static ObjectMapper getObjectMapper() {
-        if (om == null) {
-            om = new ObjectMapper();
+        if (mapper == null) {
+            mapper = new ObjectMapper();
         }
-        return om;
+        return mapper;
     }
 
     public static DatabaseHandler getDatabaseHandler() {
-        if (dth == null) {
-            dth = new DatabaseHandler();
+        if (databaseHandler == null) {
+            databaseHandler = new DatabaseHandler();
         }
-        return dth;
+        return databaseHandler;
     }
 }
