@@ -35,7 +35,6 @@ public class AuthorizationFilter implements Filter {
                 LocalUser.setLoggedUser(loggedUser);
                 filterChain.doFilter(request, response);
             } catch (Exception e) {
-                //в случае, если uuid не null, но в БД нет такого user. Какого типа сюда надо exception?
                 log.debug("Incorrect uuid.");
             }
         } else {

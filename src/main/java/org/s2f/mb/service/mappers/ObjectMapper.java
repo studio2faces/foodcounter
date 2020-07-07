@@ -29,7 +29,7 @@ public class ObjectMapper {
         return product;
     }
 
-    public User requestToUser(HttpServletRequest request){
+    public User requestToUser(HttpServletRequest request) {
         User user = null;
         JSONObject jsonObject = requestParamsToJSON(request);
         user = jsonToUser(jsonObject.toJSONString());

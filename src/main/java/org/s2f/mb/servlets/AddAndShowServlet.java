@@ -1,7 +1,6 @@
 package org.s2f.mb.servlets;
 
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
 import org.s2f.mb.service.Injector;
 import org.s2f.mb.service.LocalUser;

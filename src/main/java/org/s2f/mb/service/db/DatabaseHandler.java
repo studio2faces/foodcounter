@@ -141,7 +141,6 @@ public class DatabaseHandler {
             }
             log.error("SQL ERROR", e);
         }
-
         return uuid;
     }
 
