@@ -81,6 +81,7 @@ public class DatabaseHandler {
     public User getUserByUuid(String uuid) {
         String select = "SELECT login FROM users WHERE users_uuid = ? LIMIT 1";
         User user = null;
+
         try {
             PreparedStatement statement = dbConnection.prepareStatement(select);
             log.info("Create a statement to DB.");
@@ -114,6 +115,7 @@ public class DatabaseHandler {
     public String getUuidByLogin(String login) {
         String uuid = null;
         String select = "SELECT users_uuid FROM users WHERE login = ? LIMIT 1";
+
         try {
             PreparedStatement statement = dbConnection.prepareStatement(select);
             log.info("Create a statement to DB.");

@@ -28,7 +28,6 @@ public class AuthorizationFilter implements Filter {
         String uuid = (String) jsonObject.get("users_uuid");
 
         if (uuid != null) {
-
             try {
                 User loggedUser = databaseHandler.getUserByUuid(uuid);
                 log.debug("Authorized {}", loggedUser.toString());

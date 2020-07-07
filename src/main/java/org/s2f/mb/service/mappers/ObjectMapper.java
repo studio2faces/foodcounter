@@ -25,7 +25,6 @@ public class ObjectMapper {
         JSONObject jsonObject = requestParamsToJSON(request);
         log.info("Get JSON object: {}", jsonObject.toJSONString());
         product = jsonToProduct(jsonObject.toJSONString());
-
         return product;
     }
 
@@ -33,7 +32,6 @@ public class ObjectMapper {
         User user = null;
         JSONObject jsonObject = requestParamsToJSON(request);
         user = jsonToUser(jsonObject.toJSONString());
-
         return user;
     }
 
