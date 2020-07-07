@@ -1,6 +1,5 @@
 package org.s2f.mb.model.dto;
 
-import java.util.UUID;
 
 public class Product {
     private String name;
@@ -47,7 +46,7 @@ public class Product {
         isCooked = cooked;
     }
 
-    public String getUsers_uuid() {
+    public String getUuid() {
         return uuid;
     }
 
@@ -59,7 +58,7 @@ public class Product {
                 ", price=" + price +
                 ", kcal=" + kcal +
                 ", isCooked=" + isCooked +
-                ", users_uuid=" + uuid +
+                ", uuid=" + uuid +
                 '}';
     }
 }

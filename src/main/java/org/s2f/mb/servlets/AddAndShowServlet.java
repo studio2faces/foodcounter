@@ -26,10 +26,11 @@ public class AddAndShowServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        JSONObject jsonObject = mapper.requestParamsToJSON(request);
-        log.info("Get JSON object: {}", jsonObject.toJSONString());
 
-        Product p = mapper.jsonToProduct(jsonObject.toJSONString());
+        Product p = mapper.requestToProduct(request);
+
+
+
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         p.setCooked(false);
         log.debug("{} is created.", p);

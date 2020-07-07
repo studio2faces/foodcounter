@@ -28,10 +28,9 @@ public class AuthorizationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
-        JSONObject jsonObject = mapper.requestParamsToJSON(request);
 
-        User user = mapper.jsonToUser(jsonObject.toJSONString());
-        user.setUuid(databaseHandler.getUUIDByLogin(user.getLogin()));
+        User user = mapper.requestToUser(request);
+        user.setUuid(databaseHandler.getUuidByLogin(user.getLogin()));
         log.debug("Authorization: {}", user.toString());
 
         if (user.getUuid() == null) {

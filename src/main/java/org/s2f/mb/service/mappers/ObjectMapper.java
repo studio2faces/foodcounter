@@ -4,17 +4,37 @@ import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
 import com.google.gson.Gson;
 import org.s2f.mb.model.dto.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class ObjectMapper {
-
+    private static final Logger log = LoggerFactory.getLogger(ObjectMapper.class);
     private Gson gson = new Gson();
 
     public Product jsonToProduct(String json) {
         Product product = gson.fromJson(json, Product.class);
         return product;
+    }
+
+    public Product requestToProduct(ServletRequest request) {
+        Product product = null;
+        JSONObject jsonObject = requestParamsToJSON(request);
+        log.info("Get JSON object: {}", jsonObject.toJSONString());
+        product = jsonToProduct(jsonObject.toJSONString());
+
+        return product;
+    }
+
+    public User requestToUser(HttpServletRequest request){
+        User user = null;
+        JSONObject jsonObject = requestParamsToJSON(request);
+        user = jsonToUser(jsonObject.toJSONString());
+
+        return user;
     }
 
     public String productToJson(Product dto) {
