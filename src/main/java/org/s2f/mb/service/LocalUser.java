@@ -1,12 +1,11 @@
 package org.s2f.mb.service;
 
 import org.s2f.mb.model.dto.User;
-import org.s2f.mb.service.db.DatabaseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LocalUser {
-    private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(LocalUser.class);
 
     private final static ThreadLocal<User> LOCAL_USER = new ThreadLocal<>();
 

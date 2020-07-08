@@ -9,13 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHandler {
     private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
     private Connection dbConnection = DBConnection.getInstance();
 
     public void addProduct(Product p) {
-        String insert = "INSERT INTO food (name, weight, price, priceByOneGramm, kcal, isCooked, users_uuid) VALUES (?,?,?,?,?,?,?)";
+        String insert = "INSERT INTO food (name, weight, price, priceByOneGramm, kcal, isCooked, uuid) VALUES (?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement statement = dbConnection.prepareStatement(insert);
@@ -50,7 +52,7 @@ public class DatabaseHandler {
     }
 
     public void addUser(User user) {
-        String insert = "INSERT INTO users (users_uuid, login) VALUES (?,?)";
+        String insert = "INSERT INTO users (uuid, login) VALUES (?,?)";
 
         try {
             PreparedStatement statement = dbConnection.prepareStatement(insert);
@@ -79,7 +81,7 @@ public class DatabaseHandler {
     }
 
     public User getUserByUuid(String uuid) {
-        String select = "SELECT login FROM users WHERE users_uuid = ? LIMIT 1";
+        String select = "SELECT login FROM users WHERE uuid = ? LIMIT 1";
         User user = null;
 
         try {
@@ -114,7 +116,7 @@ public class DatabaseHandler {
 
     public String getUuidByLogin(String login) {
         String uuid = null;
-        String select = "SELECT users_uuid FROM users WHERE login = ? LIMIT 1";
+        String select = "SELECT uuid FROM users WHERE login = ? LIMIT 1";
 
         try {
             PreparedStatement statement = dbConnection.prepareStatement(select);
@@ -128,7 +130,7 @@ public class DatabaseHandler {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                uuid = resultSet.getString("users_uuid");
+                uuid = resultSet.getString("uuid");
                 log.debug("uuid = {}", uuid);
             } else throw new SQLException("No user in DB with login " + login);
 
@@ -146,9 +148,10 @@ public class DatabaseHandler {
         return uuid;
     }
 
-    public JSONArray showAllProductsByUuid(String uuid) {
-        String select = "SELECT * FROM food WHERE users_uuid=?";
-        JSONArray jsonArray = new JSONArray();
+    public List<Product> getAllProductsByUuid(String uuid) {
+        String select = "SELECT * FROM food WHERE uuid=?";
+        List<Product> products = new ArrayList<>();
+      //  JSONArray jsonArray = new JSONArray();
         Product product = null;
 
         try {
@@ -169,11 +172,12 @@ public class DatabaseHandler {
                         res.getDouble("price"),
                         res.getInt("kcal"),
                         res.getBoolean("isCooked"),
-                        res.getString("users_uuid")
+                        res.getString("uuid")
                 );
-                jsonArray.add(new ObjectMapper().productToJson(product));
-                log.debug("Show product {}", product.getName());
+                products.add(product);
+             //   jsonArray.add(new ObjectMapper().productToJson(product));
             }
+            log.debug("Create products list {}", products);
 
             dbConnection.commit();
             dbConnection.setAutoCommit(true);
@@ -188,6 +192,6 @@ public class DatabaseHandler {
             }
             log.error("SQL ERROR", e);
         }
-        return jsonArray;
+        return products;
     }
 }

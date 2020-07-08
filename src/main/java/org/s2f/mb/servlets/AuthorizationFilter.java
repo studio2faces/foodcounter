@@ -13,7 +13,7 @@ import javax.servlet.*;
 import java.io.IOException;
 
 public class AuthorizationFilter implements Filter {
-    private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthorizationFilter.class);
     private ObjectMapper mapper;
     private DatabaseHandler databaseHandler;
 
@@ -25,7 +25,7 @@ public class AuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         JSONObject jsonObject = mapper.requestParamsToJSON(request);
-        String uuid = (String) jsonObject.get("users_uuid");
+        String uuid = (String) jsonObject.get("uuid");
 
         if (uuid != null) {
             try {

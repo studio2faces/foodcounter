@@ -5,11 +5,11 @@ DROP TABLE IF EXISTS users;
 
 
 CREATE TABLE `users` (
-  `users_uuid` varchar(36) NOT NULL,
+  `uuid` varchar(36) NOT NULL,
   `login` varchar(20) NOT NULL,
-  PRIMARY KEY (`users_uuid`),
+  PRIMARY KEY (`uuid`),
   UNIQUE KEY `login_UNIQUE` (`login`),
-  UNIQUE KEY `users_uuid_UNIQUE` (`users_uuid`)
+  UNIQUE KEY `users_uuid_UNIQUE` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO users VALUES
@@ -26,7 +26,7 @@ CREATE TABLE `food` (
   `priceByOneGramm` double NOT NULL,
   `kcal` int NOT NULL,
   `isCooked` tinyint NOT NULL DEFAULT '0',
-  `users_uuid` varchar(36) NOT NULL,
+  `uuid` varchar(36) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

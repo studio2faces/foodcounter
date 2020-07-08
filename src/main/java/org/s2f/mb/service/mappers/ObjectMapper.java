@@ -1,5 +1,6 @@
 package org.s2f.mb.service.mappers;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
 import com.google.gson.Gson;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 public class ObjectMapper {
@@ -57,5 +59,14 @@ public class ObjectMapper {
             jsonObj.put(entry.getKey(), o);
         }
         return jsonObj;
+    }
+
+    public JSONArray getJsonArrayFromList(List<Product> products) {
+        JSONArray jsonArray = new JSONArray();
+        for (Product p : products) {
+            jsonArray.add(productToJson(p));
+        }
+
+        return jsonArray;
     }
 }
