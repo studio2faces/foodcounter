@@ -1,79 +1,47 @@
 package org.s2f.mb.servlets;
 
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
-import org.s2f.mb.service.db.DBConnection;
+import org.s2f.mb.service.Injector;
+import org.s2f.mb.service.LocalUser;
 import org.s2f.mb.service.db.DatabaseHandler;
-import org.s2f.mb.service.mappers.ProductMapper;
+import org.s2f.mb.service.mappers.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServlet;
-import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class AddAndShowServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(AddAndShowServlet.class);
+    private ObjectMapper mapper;
+    private DatabaseHandler databaseHandler;
+
+    public AddAndShowServlet() {
+        mapper = Injector.getObjectMapper();
+        databaseHandler = Injector.getDatabaseHandler();
+    }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ProductMapper pm = new ProductMapper();
-        JSONObject jsonObject = pm.requestParamsToJSON(request);
-        log.info("Get JSON object: {}", jsonObject.toJSONString());
-        Product p = pm.mapperJsonToDto(jsonObject.toJSONString());
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Product p = mapper.requestToProduct(request);
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         p.setCooked(false);
         log.debug("{} is created.", p);
 
-        new DatabaseHandler().addProduct(p);
+        databaseHandler.addProduct(p);
 
-        response.getWriter().println(p.getName() + " is added.");
+        response.getWriter().println(p.getName() + " is added by " + LocalUser.getLoggedUser().getLogin() + ".");
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
 
-        try {
-            Statement stmt = DBConnection.getInstance().createStatement();
+        JSONArray jsonArray = mapper.getJsonArrayFromList(databaseHandler.getAllProductsByUuid(LocalUser.getLoggedUser().getUuid()));
 
-            DBConnection.getInstance().setAutoCommit(false);
-            DBConnection.getInstance().setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-
-            log.info("Create a statement to DB - Show all products.");
-            ResultSet res = stmt.executeQuery("SELECT * FROM food");
-            ProductMapper pm = new ProductMapper();
-            Product dto = null;
-            JSONArray jsonArray = new JSONArray();
-            while (res.next()) {
-                dto = new Product(
-                        res.getString("name"),
-                        res.getInt("weight"),
-                        res.getDouble("price"),
-                        res.getInt("kcal"),
-                        res.getBoolean("isCooked")
-                );
-                jsonArray.add(pm.mapperDtoToJson(dto));
-            }
-            response.getWriter().write(jsonArray.toJSONString());
-            response.getWriter().flush();
-
-            DBConnection.getInstance().commit();
-            stmt.close();
-            log.info("Statement is closed.");
-        } catch (SQLException e) {
-            try {
-                DBConnection.getInstance().rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            log.error("Exception {}", e);
-        }
+        response.getWriter().write(jsonArray.toJSONString());
+        response.getWriter().flush();
     }
 }
