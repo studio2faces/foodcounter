@@ -1,10 +1,8 @@
 package org.s2f.mb.service.db;
 
-import org.json.simple.JSONArray;
 import org.s2f.mb.model.dto.Product;
 import org.s2f.mb.model.dto.User;
 import org.s2f.mb.service.LocalUser;
-import org.s2f.mb.service.mappers.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -151,7 +149,6 @@ public class DatabaseHandler {
     public List<Product> getAllProductsByUuid(String uuid) {
         String select = "SELECT * FROM food WHERE uuid=?";
         List<Product> products = new ArrayList<>();
-      //  JSONArray jsonArray = new JSONArray();
         Product product = null;
 
         try {
@@ -175,7 +172,6 @@ public class DatabaseHandler {
                         res.getString("uuid")
                 );
                 products.add(product);
-             //   jsonArray.add(new ObjectMapper().productToJson(product));
             }
             log.debug("Create products list {}", products);
 
