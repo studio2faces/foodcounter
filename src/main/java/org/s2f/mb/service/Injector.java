@@ -6,8 +6,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Injector {
     public static ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-    /*private static ObjectMapper mapper;
-    private static DatabaseHandler databaseHandler;*/
 
     public static ObjectMapper getObjectMapper() {
         return context.getBean("mapper", ObjectMapper.class);
