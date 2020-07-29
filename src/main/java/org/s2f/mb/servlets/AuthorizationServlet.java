@@ -16,14 +16,6 @@ public class AuthorizationServlet extends HttpServlet {
     private ObjectMapper mapper;
     private DatabaseHandler databaseHandler;
 
-    /*public AuthorizationServlet() {
-        mapper = Injector.getObjectMapper();
-        databaseHandler = Injector.getDatabaseHandler();
-    }*/
-
-    public AuthorizationServlet() {
-    }
-
     public AuthorizationServlet(ObjectMapper mapper, DatabaseHandler databaseHandler) {
         this.mapper = mapper;
         this.databaseHandler = databaseHandler;

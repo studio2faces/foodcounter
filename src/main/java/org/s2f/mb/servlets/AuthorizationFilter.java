@@ -16,14 +16,6 @@ public class AuthorizationFilter implements Filter {
     private ObjectMapper mapper;
     private DatabaseHandler databaseHandler;
 
-/*    public AuthorizationFilter() {
-        mapper = Injector.getObjectMapper();
-        databaseHandler = Injector.getDatabaseHandler();
-    }*/
-
-    public AuthorizationFilter() {
-    }
-
     public AuthorizationFilter(ObjectMapper mapper, DatabaseHandler databaseHandler) {
         this.mapper = mapper;
         this.databaseHandler = databaseHandler;

@@ -17,14 +17,6 @@ public class AddAndShowServlet extends HttpServlet {
     private ObjectMapper mapper;
     private DatabaseHandler databaseHandler;
 
-    /*public AddAndShowServlet() {
-        mapper = Injector.getObjectMapper();
-        databaseHandler = Injector.getDatabaseHandler();
-    }*/
-
-    public AddAndShowServlet() {
-    }
-
     public AddAndShowServlet(ObjectMapper mapper, DatabaseHandler databaseHandler) {
         this.mapper = mapper;
         this.databaseHandler = databaseHandler;
