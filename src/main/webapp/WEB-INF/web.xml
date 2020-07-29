@@ -7,7 +7,7 @@
 
     <display-name>Archetype Created Web Application</display-name>
 
-    <servlet>
+  <!--  <servlet>
         <servlet-name>AddAndShowServlet</servlet-name>
         <servlet-class>org.s2f.mb.servlets.AddAndShowServlet</servlet-class>
     </servlet>
@@ -43,6 +43,15 @@
         <filter-name>AuthorizationFilter</filter-name>
         <url-pattern>/AddAndShowServlet</url-pattern>
     </filter-mapping>
+-->
+    <servlet>
+        <servlet-name>FrontController</servlet-name>
+        <servlet-class>org.s2f.mb.servlets.FrontController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FrontController</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
     <resource-ref>
         <description>DB Connection</description>

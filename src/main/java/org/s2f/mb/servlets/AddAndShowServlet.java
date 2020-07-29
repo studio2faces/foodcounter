@@ -2,7 +2,6 @@ package org.s2f.mb.servlets;
 
 import org.json.simple.JSONArray;
 import org.s2f.mb.model.dto.Product;
-import org.s2f.mb.service.Injector;
 import org.s2f.mb.service.LocalUser;
 import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ObjectMapper;
@@ -18,9 +17,17 @@ public class AddAndShowServlet extends HttpServlet {
     private ObjectMapper mapper;
     private DatabaseHandler databaseHandler;
 
-    public AddAndShowServlet() {
+    /*public AddAndShowServlet() {
         mapper = Injector.getObjectMapper();
         databaseHandler = Injector.getDatabaseHandler();
+    }*/
+
+    public AddAndShowServlet() {
+    }
+
+    public AddAndShowServlet(ObjectMapper mapper, DatabaseHandler databaseHandler) {
+        this.mapper = mapper;
+        this.databaseHandler = databaseHandler;
     }
 
     @Override

@@ -15,4 +15,27 @@
           class="org.s2f.mb.service.db.DatabaseHandler">
     </bean>
 
+    <bean id="addAndShowServlet"
+          class="org.s2f.mb.servlets.AddAndShowServlet">
+        <constructor-arg ref="mapper"/>
+        <constructor-arg ref="databaseHandler"/>
+    </bean>
+
+    <bean id="authorizationServlet"
+          class="org.s2f.mb.servlets.AuthorizationServlet">
+        <constructor-arg ref="mapper"/>
+        <constructor-arg ref="databaseHandler"/>
+    </bean>
+
+    <bean id="authorizationFilter"
+          class="org.s2f.mb.servlets.AuthorizationFilter">
+        <constructor-arg ref="mapper"/>
+        <constructor-arg ref="databaseHandler"/>
+    </bean>
+
+    <bean id="encodingFilter"
+          class="org.s2f.mb.servlets.EncodingFilter">
+    </bean>
+
+
 </beans>

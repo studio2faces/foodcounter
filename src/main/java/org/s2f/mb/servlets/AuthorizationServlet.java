@@ -1,7 +1,6 @@
 package org.s2f.mb.servlets;
 
 import org.s2f.mb.model.dto.User;
-import org.s2f.mb.service.Injector;
 import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ObjectMapper;
 import org.slf4j.Logger;
@@ -17,9 +16,17 @@ public class AuthorizationServlet extends HttpServlet {
     private ObjectMapper mapper;
     private DatabaseHandler databaseHandler;
 
-    public AuthorizationServlet() {
+    /*public AuthorizationServlet() {
         mapper = Injector.getObjectMapper();
         databaseHandler = Injector.getDatabaseHandler();
+    }*/
+
+    public AuthorizationServlet() {
+    }
+
+    public AuthorizationServlet(ObjectMapper mapper, DatabaseHandler databaseHandler) {
+        this.mapper = mapper;
+        this.databaseHandler = databaseHandler;
     }
 
     @Override
