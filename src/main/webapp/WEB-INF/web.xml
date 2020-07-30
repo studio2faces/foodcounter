@@ -8,41 +8,13 @@
     <display-name>Archetype Created Web Application</display-name>
 
     <servlet>
-        <servlet-name>AddAndShowServlet</servlet-name>
-        <servlet-class>org.s2f.mb.servlets.AddAndShowServlet</servlet-class>
+        <servlet-name>FrontController</servlet-name>
+        <servlet-class>org.s2f.mb.servlets.FrontController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>AddAndShowServlet</servlet-name>
-        <url-pattern>/AddAndShowServlet</url-pattern>
+        <servlet-name>FrontController</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
-
-    <filter>
-        <filter-name>EncodingFilter</filter-name>
-        <filter-class>org.s2f.mb.servlets.EncodingFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>EncodingFilter</filter-name>
-        <url-pattern>/AddAndShowServlet</url-pattern>
-        <url-pattern>/AuthorizationServlet</url-pattern>
-    </filter-mapping>
-
-    <servlet>
-        <servlet-name>AuthorizationServlet</servlet-name>
-        <servlet-class>org.s2f.mb.servlets.AuthorizationServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AuthorizationServlet</servlet-name>
-        <url-pattern>/AuthorizationServlet</url-pattern>
-    </servlet-mapping>
-
-    <filter>
-        <filter-name>AuthorizationFilter</filter-name>
-        <filter-class>org.s2f.mb.servlets.AuthorizationFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthorizationFilter</filter-name>
-        <url-pattern>/AddAndShowServlet</url-pattern>
-    </filter-mapping>
 
     <resource-ref>
         <description>DB Connection</description>

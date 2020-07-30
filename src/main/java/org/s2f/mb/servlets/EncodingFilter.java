@@ -12,6 +12,11 @@ public class EncodingFilter implements Filter {
         filterChain.doFilter(request, response);
     }
 
+    public void doFilterWithoutChain(ServletRequest request, ServletResponse response) throws IOException, ServletException{
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+    }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
