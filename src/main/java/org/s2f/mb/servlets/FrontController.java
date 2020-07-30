@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class FrontController extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(FrontController.class);
+    private static final String DOMAIN = "http://localhost:8080/";
     public static ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
     AuthorizationFilter authorizationFilter = context.getBean("authorizationFilter", AuthorizationFilter.class);
@@ -23,7 +24,7 @@ public class FrontController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.info("FrontController: method {}, url {}.", req.getMethod(), req.getRequestURL().toString());
-        String servletName = req.getRequestURL().toString().substring(22);
+        String servletName = req.getRequestURL().toString().substring(DOMAIN.length());
         String method = req.getMethod();
 
         encodingFilter.doFilterWithoutChain(req, resp);
