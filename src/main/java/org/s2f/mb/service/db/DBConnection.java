@@ -2,10 +2,12 @@ package org.s2f.mb.service.db;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 
 public class DBConnection {
     private static final Logger log = LoggerFactory.getLogger(DatabaseHandler.class);

@@ -1,5 +1,7 @@
 package org.s2f.mb.servlets;
 
+import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import java.io.IOException;
 

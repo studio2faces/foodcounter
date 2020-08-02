@@ -7,11 +7,17 @@ import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
+@Controller
 public class AddAndShowServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(AddAndShowServlet.class);
     private ObjectMapper mapper;
@@ -23,6 +29,7 @@ public class AddAndShowServlet extends HttpServlet {
     }
 
     @Override
+    @PostMapping("/AddAndShowServlet")
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Product p = mapper.requestToProduct(request);
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
@@ -35,6 +42,7 @@ public class AddAndShowServlet extends HttpServlet {
     }
 
     @Override
+    @GetMapping("/AddAndShowServlet")
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
 
