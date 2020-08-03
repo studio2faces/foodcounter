@@ -49,6 +49,7 @@ public class DatabaseHandler {
                 e1.printStackTrace();
             }
             log.error("SQL ERROR", e);
+            e.printStackTrace();
         }
     }
 

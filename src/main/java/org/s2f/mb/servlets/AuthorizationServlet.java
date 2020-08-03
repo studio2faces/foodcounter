@@ -22,6 +22,7 @@ public class AuthorizationServlet extends HttpServlet {
     private ObjectMapper mapper;
     private DatabaseHandler databaseHandler;
 
+    @Autowired
     public AuthorizationServlet(ObjectMapper mapper, DatabaseHandler databaseHandler) {
         this.mapper = mapper;
         this.databaseHandler = databaseHandler;

@@ -18,6 +18,7 @@ public class AuthorizationFilter implements Filter {
     private ObjectMapper mapper;
     private DatabaseHandler databaseHandler;
 
+    @Autowired
     public AuthorizationFilter(ObjectMapper mapper, DatabaseHandler databaseHandler) {
         this.mapper = mapper;
         this.databaseHandler = databaseHandler;
@@ -42,24 +43,7 @@ public class AuthorizationFilter implements Filter {
         }
     }
 
-    public void doFilterWithoutChain(ServletRequest request) throws IOException, ServletException {
-        JSONObject jsonObject = mapper.requestParamsToJSON(request);
-        String uuid = (String) jsonObject.get("uuid");
-
-        if (uuid != null) {
-            try {
-                User loggedUser = databaseHandler.getUserByUuid(uuid);
-                log.debug("Authorized {}", loggedUser.toString());
-                LocalUser.setLoggedUser(loggedUser);
-            } catch (Exception e) {
-                log.debug("Incorrect uuid.");
-            }
-        } else {
-            log.error("Uuid is null.");
-        }
-    }
-
-    @Override
+        @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 

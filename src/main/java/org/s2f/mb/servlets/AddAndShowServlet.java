@@ -20,9 +20,11 @@ import java.io.IOException;
 @Controller
 public class AddAndShowServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(AddAndShowServlet.class);
+
     private ObjectMapper mapper;
     private DatabaseHandler databaseHandler;
 
+    @Autowired
     public AddAndShowServlet(ObjectMapper mapper, DatabaseHandler databaseHandler) {
         this.mapper = mapper;
         this.databaseHandler = databaseHandler;
