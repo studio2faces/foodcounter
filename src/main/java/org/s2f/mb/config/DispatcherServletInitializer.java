@@ -3,9 +3,12 @@ package org.s2f.mb.config;
 import org.s2f.mb.servlets.AuthorizationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
@@ -33,4 +36,16 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 
         return new Filter[]{authorizationFilter, encodingFilter};
     }*/
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy("authorizationFilter");
+        servletContext.addFilter("authorizationFilter", delegatingFilterProxy)
+                .addMappingForUrlPatterns(null, false, "/AddAndShowServlet");
+
+        DelegatingFilterProxy encodingFilter = new DelegatingFilterProxy("encodingFilter");
+        servletContext.addFilter("encodingFilter", encodingFilter)
+                .addMappingForUrlPatterns(null, false, "/");
+
+    }
 }
