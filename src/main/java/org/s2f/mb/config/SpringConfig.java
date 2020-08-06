@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import javax.servlet.Filter;
+
 
 @Configuration
 @ComponentScan("org.s2f.mb")
@@ -15,14 +17,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 public class SpringConfig {
 
-   /* @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
 
-    @Bean
-    public DatabaseHandler databaseHandler() {
-        return new DatabaseHandler();
-    }*/
 
 }

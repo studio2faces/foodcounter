@@ -26,26 +26,27 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
         return new String[]{"/"};
     }
 
-    /*@Override
+    @Override
     protected Filter[] getServletFilters() {
-        AuthorizationFilter authorizationFilter = new AuthorizationFilter();
+        DelegatingFilterProxy filterProxy = new DelegatingFilterProxy();
+        filterProxy.setTargetBeanName("authorizationFilter");
 
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
         encodingFilter.setEncoding("UTF-8");
         encodingFilter.setForceEncoding(true);
 
-        return new Filter[]{authorizationFilter, encodingFilter};
-    }*/
+        return new Filter[]{filterProxy, encodingFilter};
+    }
 
-    @Override
+    /*@Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy("authorizationFilter");
         servletContext.addFilter("authorizationFilter", delegatingFilterProxy)
                 .addMappingForUrlPatterns(null, false, "/AddAndShowServlet");
 
-        DelegatingFilterProxy encodingFilter = new DelegatingFilterProxy("encodingFilter");
+        *//*DelegatingFilterProxy encodingFilter = new DelegatingFilterProxy("encodingFilter");
         servletContext.addFilter("encodingFilter", encodingFilter)
-                .addMappingForUrlPatterns(null, false, "/");
+                .addMappingForUrlPatterns(null, false, "/");*//*
 
-    }
+    }*/
 }

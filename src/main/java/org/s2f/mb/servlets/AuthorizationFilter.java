@@ -11,16 +11,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.Mapping;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 
-@Order(2)
-@Component
+@Component("authorizationFilter")
 public class AuthorizationFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(AuthorizationFilter.class);
 

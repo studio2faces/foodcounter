@@ -18,6 +18,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 
 @Controller
+@Component
 public class AddAndShowServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(AddAndShowServlet.class);
 
