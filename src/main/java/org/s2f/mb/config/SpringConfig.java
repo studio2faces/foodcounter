@@ -13,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @ComponentScan("org.s2f.mb")
-@PropertySource("classpath:db.properties")
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
 
@@ -21,7 +20,6 @@ public class SpringConfig implements WebMvcConfigurer {
     AuthorizationInterceptor authorizationInterceptor() {
         return new AuthorizationInterceptor();
     }
-
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
