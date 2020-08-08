@@ -15,29 +15,23 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
-@Component("authorizationFilter")
+@Component
+
 public class AuthorizationFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(AuthorizationFilter.class);
-
-    // @Autowired
-    // private ApplicationContext context;
-    //  AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext(SpringConfig.class);
-
-    /*private ObjectMapper mapper=configApplicationContext.getBean("objectMapper", ObjectMapper.class);
-    private DatabaseHandler databaseHandler=configApplicationContext.getBean("databaseHandler", DatabaseHandler.class);*/
 
     private ObjectMapper mapper;
     private DatabaseHandler databaseHandler;
 
     public AuthorizationFilter() {
-        /*mapper = new ObjectMapper();
-        databaseHandler = new DatabaseHandler();*/
     }
 
     @Autowired
@@ -48,6 +42,12 @@ public class AuthorizationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        /*String url = ((HttpServletRequest) request).getRequestURL().toString();
+        System.out.println(url);
+        if (url.startsWith("http://localhost:8080/AuthorizationServlet")) {
+            filterChain.doFilter(request, response);
+        }*/
+
         JSONObject jsonObject = mapper.requestParamsToJSON(request);
         String uuid = (String) jsonObject.get("uuid");
 
@@ -67,9 +67,11 @@ public class AuthorizationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+
     }
 
     @Override
     public void destroy() {
+
     }
 }
