@@ -48,7 +48,7 @@ public class AuthorizationFilter implements Filter {
             filterChain.doFilter(request, response);
         }*/
 
-        JSONObject jsonObject = mapper.requestParamsToJSON(request);
+       /* JSONObject jsonObject = mapper.requestParamsToJSON(request);
         String uuid = (String) jsonObject.get("uuid");
 
         if (uuid != null) {
@@ -62,7 +62,7 @@ public class AuthorizationFilter implements Filter {
             }
         } else {
             log.error("Uuid is null.");
-        }
+        }*/
     }
 
     @Override

@@ -1,7 +1,7 @@
 package org.s2f.mb.config;
 
 import org.s2f.mb.servlets.AuthorizationFilter;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -29,7 +29,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
         return new String[]{"/"};
     }
 
-    @Override
+   /* @Override
     protected Filter[] getServletFilters() {
         DelegatingFilterProxy filterProxy = new DelegatingFilterProxy();
         filterProxy.setTargetBeanName("authorizationFilter");
@@ -40,7 +40,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 
         return new Filter[]{encodingFilter, filterProxy};
     }
-
+*/
    /* @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy("authorizationFilter");
