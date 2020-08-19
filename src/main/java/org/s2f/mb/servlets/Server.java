@@ -1,5 +1,6 @@
 package org.s2f.mb.servlets;
 
+import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.ServerSocket;
@@ -51,6 +52,7 @@ public class Server {
                     System.out.println("Client disconnected!");
 
                     HttpServletRequest request = createHttpServletRequest(lines);
+                    sendRequestToServlet((MyRequest) request);
 
                 }
             }
@@ -65,14 +67,14 @@ public class Server {
         String body = lines.get(0);
         String[] bodyParams = body.split(" ");
         String method = bodyParams[0];
-        System.out.println(method);
+        System.out.println("Method: " + method);
         String url = bodyParams[1];
         String servletName = url.substring(0, url.indexOf("?"));
-        System.out.println(servletName);
+        System.out.println("Servlet: " + servletName);
 
-        Map<String, String[]> params = new HashMap<>();
-        url = url.substring(url.indexOf("?"));
-        System.out.println(url);
+        url = url.substring(url.indexOf("?") + 1);
+        Map<String, String[]> params = getRequestParams(url);
+        System.out.println("URL: " + url);
 
 
         HttpServletRequest httpServletRequest = new MyRequest(method, servletName, params);
@@ -83,13 +85,27 @@ public class Server {
         HttpServletResponse httpServletResponse = new MyResponse();
     }*/
 
-   /* public void sendRequestToServlet(MyRequest request) throws IOException {
-        if (request.getMethod().equals("POST") && request.getServletName().equals("AddAndShowServlet")) {
+    public static Map<String, String[]> getRequestParams(String requestLine) {
+        Map<String, String[]> params = new HashMap<>();
+        String[] paramsFromRequestLine = requestLine.split("&");
+        for (String x : paramsFromRequestLine) {
+            System.out.println("Pair: " + x);
+            String[] pair = x.split("=");
+            String key = pair[0];
+            String[] values = {pair[1]};
+            params.put(key, values);
+        }
+        return params;
+    }
+
+    public static void sendRequestToServlet(MyRequest request) throws IOException {
+        if (request.getMethod().equals("POST") && request.getServletName().equals("/AddAndShowServlet")) {
+           // new AuthorizationFilter(request, null,);
             new AddAndShowServlet().doPost(request, null);
-        } else if (request.getMethod().equals("GET") && request.getServletName().equals("AddAndShowServlet")) {
+        } else if (request.getMethod().equals("GET") && request.getServletName().equals("/AddAndShowServlet")) {
             new AddAndShowServlet().doGet(request, null);
-        } else if (request.getMethod().equals("POST") && request.getServletName().equals("AuthorizationServlet")) {
+        } else if (request.getMethod().equals("POST") && request.getServletName().equals("/AuthorizationServlet")) {
             new AuthorizationServlet().doPost(request, null);
         }
-    }*/
+    }
 }

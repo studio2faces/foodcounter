@@ -32,6 +32,7 @@ public class AddAndShowServlet extends HttpServlet {
 
         databaseHandler.addProduct(p);
 
+
         response.getWriter().println(p.getName() + " is added by " + LocalUser.getLoggedUser().getLogin() + ".");
     }
 

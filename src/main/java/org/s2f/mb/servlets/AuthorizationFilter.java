@@ -26,6 +26,7 @@ public class AuthorizationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         JSONObject jsonObject = mapper.requestParamsToJSON(request);
         String uuid = (String) jsonObject.get("uuid");
+        log.debug("Uuid = {}", uuid);
 
         if (uuid != null) {
             try {
