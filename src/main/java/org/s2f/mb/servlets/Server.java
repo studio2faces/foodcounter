@@ -1,7 +1,11 @@
 package org.s2f.mb.servlets;
 
-import javax.servlet.FilterChain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Server {
+    private static final Logger log = LoggerFactory.getLogger(AddAndShowServlet.class);
     static List<String> lines = new ArrayList<>();
 
 
@@ -40,56 +45,47 @@ public class Server {
                         System.out.println(line);
                     }
 
+                    HttpServletRequest request = createHttpServletRequest(lines);
+                    sendRequestToServlet((MyRequest) request, socket, output);
+
                     // отправляем ответ
                     output.println("HTTP/1.1 200 OK");
                     output.println("Content-Type: text/html; charset=utf-8");
                     output.println();
-                    output.println("<p>Привет всем!</p>");
+                    output.println("<p>This is response!</p>");
                     output.flush();
 
-                    // по окончанию выполнения блока try-with-resources потоки,
-                    // а вместе с ними и соединение будут закрыты
                     System.out.println("Client disconnected!");
-
-                    HttpServletRequest request = createHttpServletRequest(lines);
-                    sendRequestToServlet((MyRequest) request);
-
                 }
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 
     public static HttpServletRequest createHttpServletRequest(List<String> lines) {
-
         String body = lines.get(0);
         String[] bodyParams = body.split(" ");
+
         String method = bodyParams[0];
-        System.out.println("Method: " + method);
+        log.info("Method is {}.", method);
+
         String url = bodyParams[1];
+
         String servletName = url.substring(0, url.indexOf("?"));
-        System.out.println("Servlet: " + servletName);
+        log.info("Servlet is {}", servletName);
 
         url = url.substring(url.indexOf("?") + 1);
         Map<String, String[]> params = getRequestParams(url);
-        System.out.println("URL: " + url);
+        log.info("Params are {}", url);
 
-
-        HttpServletRequest httpServletRequest = new MyRequest(method, servletName, params);
-        return httpServletRequest;
+        return new MyRequest(method, servletName, params);
     }
-
-   /* public static HttpServletResponse createHttpServletResponse{
-        HttpServletResponse httpServletResponse = new MyResponse();
-    }*/
 
     public static Map<String, String[]> getRequestParams(String requestLine) {
         Map<String, String[]> params = new HashMap<>();
         String[] paramsFromRequestLine = requestLine.split("&");
         for (String x : paramsFromRequestLine) {
-            System.out.println("Pair: " + x);
             String[] pair = x.split("=");
             String key = pair[0];
             String[] values = {pair[1]};
@@ -98,14 +94,26 @@ public class Server {
         return params;
     }
 
-    public static void sendRequestToServlet(MyRequest request) throws IOException {
+    public static void sendRequestToServlet(MyRequest request, Socket socket, PrintWriter output) throws IOException {
+        HttpServletResponse response = new MyResponse(socket);
         if (request.getMethod().equals("POST") && request.getServletName().equals("/AddAndShowServlet")) {
-           // new AuthorizationFilter(request, null,);
-            new AddAndShowServlet().doPost(request, null);
+            try {
+                new AuthorizationFilter().doFilterWithoutChain(request);
+                new AddAndShowServlet().doPost(request, response);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            }
         } else if (request.getMethod().equals("GET") && request.getServletName().equals("/AddAndShowServlet")) {
-            new AddAndShowServlet().doGet(request, null);
+            try {
+                new AuthorizationFilter().doFilterWithoutChain(request);
+                new AddAndShowServlet().doGet(request, new MyResponse(socket));
+            } catch (ServletException e) {
+                e.printStackTrace();
+            }
         } else if (request.getMethod().equals("POST") && request.getServletName().equals("/AuthorizationServlet")) {
-            new AuthorizationServlet().doPost(request, null);
+            new AuthorizationServlet().doPost(request, new MyResponse(socket));
         }
     }
+
+
 }

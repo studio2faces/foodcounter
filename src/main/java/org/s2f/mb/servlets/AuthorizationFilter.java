@@ -42,6 +42,23 @@ public class AuthorizationFilter implements Filter {
         }
     }
 
+    public void doFilterWithoutChain(ServletRequest request) throws IOException, ServletException {
+        JSONObject jsonObject = mapper.requestParamsToJSON(request);
+        String uuid = (String) jsonObject.get("users_uuid");
+
+        if (uuid != null) {
+            try {
+                User loggedUser = databaseHandler.getUserByUuid(uuid);
+                log.debug("Authorized {}", loggedUser.toString());
+                LocalUser.setLoggedUser(loggedUser);
+            } catch (Exception e) {
+                log.debug("Incorrect uuid.");
+            }
+        } else {
+            log.error("Uuid is null.");
+        }
+    }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }

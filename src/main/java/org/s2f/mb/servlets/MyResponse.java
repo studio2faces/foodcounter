@@ -1,14 +1,26 @@
 package org.s2f.mb.servlets;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Collection;
 import java.util.Locale;
 
 public class MyResponse implements HttpServletResponse {
+    Socket socket;
+
+    String contentType;
+
+    public MyResponse(Socket socket) {
+        this.socket = socket;
+    }
+
     @Override
     public void addCookie(Cookie cookie) {
 
@@ -121,17 +133,32 @@ public class MyResponse implements HttpServletResponse {
 
     @Override
     public String getContentType() {
-        return null;
+        return this.contentType;
     }
 
     @Override
     public ServletOutputStream getOutputStream() throws IOException {
-        return null;
+        return new ServletOutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+                new ByteArrayOutputStream().write(b);
+            }
+
+            @Override
+            public boolean isReady() {
+                return false;
+            }
+
+            @Override
+            public void setWriteListener(WriteListener writeListener) {
+
+            }
+        };
     }
 
     @Override
     public PrintWriter getWriter() throws IOException {
-        return null;
+        return new PrintWriter(socket.getOutputStream());
     }
 
     @Override
@@ -151,7 +178,7 @@ public class MyResponse implements HttpServletResponse {
 
     @Override
     public void setContentType(String type) {
-
+        this.contentType = type;
     }
 
     @Override
