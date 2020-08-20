@@ -46,10 +46,13 @@ public class AddAndShowServlet {
         try {
             jsonArray = mapper.getJsonArrayFromList(databaseHandler.getAllProductsByUuid(LocalUser.getLoggedUser().getUuid()));
 
+            String json = jsonArray.toJSONString();
+            System.out.println(json);
+
             output.println("HTTP/1.1 200 OK");
             output.println("Content-Type: application/json");
             output.println();
-            output.write(jsonArray.toJSONString());
+            output.write(json);
         } catch (Exception e) {
             output.println("HTTP/1.1 503 Service Unavailable");
         }
