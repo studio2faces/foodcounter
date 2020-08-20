@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -33,7 +32,6 @@ public class Server {
                 try (BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
                      PrintWriter output = new PrintWriter(socket.getOutputStream())) {
 
-
                     // ждем первой строки запроса
                     while (!input.ready()) ;
 
@@ -46,13 +44,8 @@ public class Server {
                     }
 
                     HttpServletRequest request = createHttpServletRequest(lines);
-                    sendRequestToServlet((MyRequest) request, socket, output);
+                    sendRequestToServlet((MyRequest) request, output);
 
-                    // отправляем ответ
-                    output.println("HTTP/1.1 200 OK");
-                    output.println("Content-Type: text/html; charset=utf-8");
-                    output.println();
-                    output.println("<p>This is response!</p>");
                     output.flush();
 
                     System.out.println("Client disconnected!");
@@ -94,26 +87,23 @@ public class Server {
         return params;
     }
 
-    public static void sendRequestToServlet(MyRequest request, Socket socket, PrintWriter output) throws IOException {
-        HttpServletResponse response = new MyResponse(socket);
+    public static void sendRequestToServlet(MyRequest request, PrintWriter output) throws IOException {
         if (request.getMethod().equals("POST") && request.getServletName().equals("/AddAndShowServlet")) {
             try {
                 new AuthorizationFilter().doFilterWithoutChain(request);
-                new AddAndShowServlet().doPost(request, response);
+                new AddAndShowServlet().doPost(request, output);
             } catch (ServletException e) {
                 e.printStackTrace();
             }
         } else if (request.getMethod().equals("GET") && request.getServletName().equals("/AddAndShowServlet")) {
             try {
                 new AuthorizationFilter().doFilterWithoutChain(request);
-                new AddAndShowServlet().doGet(request, new MyResponse(socket));
+                new AddAndShowServlet().doGet(request, output);
             } catch (ServletException e) {
                 e.printStackTrace();
             }
         } else if (request.getMethod().equals("POST") && request.getServletName().equals("/AuthorizationServlet")) {
-            new AuthorizationServlet().doPost(request, new MyResponse(socket));
+            new AuthorizationServlet().doPost(request, output);
         }
     }
-
-
 }

@@ -7,12 +7,10 @@ import org.s2f.mb.service.mappers.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.PrintWriter;
 
-public class AuthorizationServlet extends HttpServlet {
+public class AuthorizationServlet {
     private static final Logger log = LoggerFactory.getLogger(AuthorizationServlet.class);
     private ObjectMapper mapper;
     private DatabaseHandler databaseHandler;
@@ -22,23 +20,30 @@ public class AuthorizationServlet extends HttpServlet {
         databaseHandler = Injector.getDatabaseHandler();
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-
+    protected void doPost(HttpServletRequest request, PrintWriter output) {
         User user = mapper.requestToUser(request);
         user.setUuid(databaseHandler.getUuidByLogin(user.getLogin()));
         log.debug("Authorization: {}", user.toString());
 
-        if (user.getUuid() == null) {
-            log.info("New user.");
-            user.generateUuid();
-            databaseHandler.addUser(user);
-            log.debug("New user - {}", user.toString());
-        } else {
-            log.debug("User exists - {}", user.toString());
+        try {
+            if (user.getUuid() == null) {
+                log.info("New user.");
+                user.generateUuid();
+                databaseHandler.addUser(user);
+                log.debug("New user - {}", user.toString());
+            } else {
+                log.debug("User exists - {}", user.toString());
+            }
+            output.println("HTTP/1.1 200 OK");
+            output.println("Content-Type: application/json");
+            output.println();
+            output.write(mapper.userUuidToJson(user));
+        } catch (Exception e) {
+            output.println("HTTP/1.1 503 Service Unavailable");
+            output.println("Content-Type: text/html; charset=utf-8");
+            output.println();
+            output.println("<p>Something wrong with database.</p>");
         }
 
-        response.getWriter().write(mapper.userUuidToJson(user));
     }
 }

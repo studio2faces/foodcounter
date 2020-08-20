@@ -13,12 +13,12 @@ import java.util.Collection;
 import java.util.Locale;
 
 public class MyResponse implements HttpServletResponse {
-    Socket socket;
+    int status;
+    String statusMessage;
 
     String contentType;
 
-    public MyResponse(Socket socket) {
-        this.socket = socket;
+    public MyResponse() {
     }
 
     @Override
@@ -98,17 +98,18 @@ public class MyResponse implements HttpServletResponse {
 
     @Override
     public void setStatus(int sc) {
-
+        this.status=sc;
     }
 
     @Override
     public void setStatus(int sc, String sm) {
-
+        this.status = sc;
+        this.statusMessage = sm;
     }
 
     @Override
     public int getStatus() {
-        return 0;
+        return status;
     }
 
     @Override
@@ -158,7 +159,7 @@ public class MyResponse implements HttpServletResponse {
 
     @Override
     public PrintWriter getWriter() throws IOException {
-        return new PrintWriter(socket.getOutputStream());
+        return null;
     }
 
     @Override
