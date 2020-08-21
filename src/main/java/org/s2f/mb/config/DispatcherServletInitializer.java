@@ -1,9 +1,11 @@
 package org.s2f.mb.config;
 
+
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.Filter;
+import javax.servlet.*;
 
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
@@ -22,12 +24,17 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
     }
 
     @Override
-    protected Filter[] getServletFilters() {
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+
+        servletContext.addFilter("authorizationFilter", new DelegatingFilterProxy("authorizationFilter"))
+                .addMappingForUrlPatterns(null, false, "/AddAndShowServlet");
+
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
         encodingFilter.setEncoding("UTF-8");
         encodingFilter.setForceEncoding(true);
 
-        return new Filter[]{encodingFilter};
+        servletContext.addFilter("encodingFilter", encodingFilter)
+        .addMappingForUrlPatterns(null, false, "/*");
     }
-
 }

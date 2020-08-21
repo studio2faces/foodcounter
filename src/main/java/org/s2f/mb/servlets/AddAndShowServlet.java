@@ -1,6 +1,5 @@
 package org.s2f.mb.servlets;
 
-import org.json.simple.JSONArray;
 import org.s2f.mb.model.dto.Product;
 import org.s2f.mb.service.LocalUser;
 import org.s2f.mb.service.db.DatabaseHandler;
@@ -49,9 +48,9 @@ public class AddAndShowServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
 
-        JSONArray jsonArray = mapper.getJsonArrayFromList(databaseHandler.getAllProductsByUuid(LocalUser.getLoggedUser().getUuid()));
+        String jsonData = mapper.getJsonDataFromList(databaseHandler.getAllProductsByUuid(LocalUser.getLoggedUser().getUuid()));
 
-        response.getWriter().write(jsonArray.toJSONString());
+        response.getWriter().write(jsonData);
         response.getWriter().flush();
     }
 }

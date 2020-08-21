@@ -1,6 +1,6 @@
 package org.s2f.mb.service.mappers;
 
-import org.json.simple.JSONArray;
+import com.google.gson.GsonBuilder;
 import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
 import com.google.gson.Gson;
@@ -40,6 +40,7 @@ public class ObjectMapper {
     }
 
     public String productToJson(Product dto) {
+        gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(dto);
     }
 
@@ -49,26 +50,22 @@ public class ObjectMapper {
     }
 
     public String userUuidToJson(User user) {
+        gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(user.getUuid());
     }
 
     public JSONObject requestParamsToJSON(ServletRequest req) {
-        JSONObject jsonObj = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         Map<String, String[]> params = req.getParameterMap();
         for (Map.Entry<String, String[]> entry : params.entrySet()) {
-            String v[] = entry.getValue();
+            String[] v = entry.getValue();
             Object o = (v.length == 1) ? v[0] : v;
-            jsonObj.put(entry.getKey(), o);
+            jsonObject.put(entry.getKey(), o);
         }
-        return jsonObj;
+        return jsonObject;
     }
 
-    public JSONArray getJsonArrayFromList(List<Product> products) {
-        JSONArray jsonArray = new JSONArray();
-        for (Product p : products) {
-            jsonArray.add(productToJson(p));
-        }
-
-        return jsonArray;
+    public String getJsonDataFromList(List<Product> products) {
+        return gson.toJson(products);
     }
 }

@@ -1,5 +1,8 @@
 package org.s2f.mb.servlets;
 
+import org.json.simple.JSONObject;
+import org.s2f.mb.model.dto.User;
+import org.s2f.mb.service.LocalUser;
 import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.service.mappers.ObjectMapper;
 import org.slf4j.Logger;
@@ -29,13 +32,7 @@ public class AuthorizationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        /*String url = ((HttpServletRequest) request).getRequestURL().toString();
-        System.out.println(url);
-        if (url.startsWith("http://localhost:8080/AuthorizationServlet")) {
-            filterChain.doFilter(request, response);
-        }*/
-
-       /* JSONObject jsonObject = mapper.requestParamsToJSON(request);
+        JSONObject jsonObject = mapper.requestParamsToJSON(request);
         String uuid = (String) jsonObject.get("uuid");
 
         if (uuid != null) {
@@ -49,16 +46,14 @@ public class AuthorizationFilter implements Filter {
             }
         } else {
             log.error("Uuid is null.");
-        }*/
+        }
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
     public void destroy() {
-
     }
 }
