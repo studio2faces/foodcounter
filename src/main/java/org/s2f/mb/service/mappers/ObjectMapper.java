@@ -1,6 +1,6 @@
 package org.s2f.mb.service.mappers;
 
-import org.json.simple.JSONArray;
+import com.google.gson.GsonBuilder;
 import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.Product;
 import com.google.gson.Gson;
@@ -38,6 +38,7 @@ public class ObjectMapper {
     }
 
     public String productToJson(Product dto) {
+        gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(dto);
     }
 
@@ -47,6 +48,7 @@ public class ObjectMapper {
     }
 
     public String userUuidToJson(User user) {
+        gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(user.getUuid());
     }
 
@@ -61,12 +63,7 @@ public class ObjectMapper {
         return jsonObj;
     }
 
-    public JSONArray getJsonArrayFromList(List<Product> products) {
-        JSONArray jsonArray = new JSONArray();
-        for (Product p : products) {
-            jsonArray.add(productToJson(p));
-        }
-
-        return jsonArray;
+    public String getJsonDataFromList(List<Product>products){
+        return gson.toJson(products);
     }
 }

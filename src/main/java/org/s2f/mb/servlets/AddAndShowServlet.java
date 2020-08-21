@@ -1,6 +1,5 @@
 package org.s2f.mb.servlets;
 
-import org.json.simple.JSONArray;
 import org.s2f.mb.model.dto.Product;
 import org.s2f.mb.service.Injector;
 import org.s2f.mb.service.LocalUser;
@@ -42,17 +41,13 @@ public class AddAndShowServlet {
     }
 
     protected void doGet(HttpServletRequest request, PrintWriter output) throws IOException {
-        JSONArray jsonArray = null;
         try {
-            jsonArray = mapper.getJsonArrayFromList(databaseHandler.getAllProductsByUuid(LocalUser.getLoggedUser().getUuid()));
-
-            String json = jsonArray.toJSONString();
-            System.out.println(json);
+            String jsonData = mapper.getJsonDataFromList(databaseHandler.getAllProductsByUuid(LocalUser.getLoggedUser().getUuid()));
 
             output.println("HTTP/1.1 200 OK");
             output.println("Content-Type: application/json");
             output.println();
-            output.write(json);
+            output.write(jsonData);
         } catch (Exception e) {
             output.println("HTTP/1.1 503 Service Unavailable");
         }
