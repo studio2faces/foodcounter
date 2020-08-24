@@ -1,0 +1,198 @@
+{
+	"info": {
+		"_postman_id": "65d23d86-09b1-408c-8b2c-3504bfc82b99",
+		"name": "Foodcounter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authorization",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/AuthorizationServlet?login=Dasha",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"AuthorizationServlet"
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "Dasha"
+						}
+					]
+				},
+				"description": "login"
+			},
+			"response": []
+		},
+		{
+			"name": "Add product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/AddAndShowServlet?name=Milk&weight=200&price=80&kcal=500&users_uuid=4856190a-03c6-4c7c-8da2-89353a4a83ca",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"AddAndShowServlet"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Milk"
+						},
+						{
+							"key": "weight",
+							"value": "200"
+						},
+						{
+							"key": "price",
+							"value": "80"
+						},
+						{
+							"key": "kcal",
+							"value": "500"
+						},
+						{
+							"key": "users_uuid",
+							"value": "4856190a-03c6-4c7c-8da2-89353a4a83ca"
+						}
+					]
+				},
+				"description": "Add a product"
+			},
+			"response": []
+		},
+		{
+			"name": "Add product Socket",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/AddAndShowServlet?name=Milk&weight=200&price=80&kcal=500&users_uuid=4856190a-03c6-4c7c-8da2-89353a4a83ca",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"AddAndShowServlet"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Milk"
+						},
+						{
+							"key": "weight",
+							"value": "200"
+						},
+						{
+							"key": "price",
+							"value": "80"
+						},
+						{
+							"key": "kcal",
+							"value": "500"
+						},
+						{
+							"key": "users_uuid",
+							"value": "4856190a-03c6-4c7c-8da2-89353a4a83ca"
+						}
+					]
+				},
+				"description": "Add a product"
+			},
+			"response": []
+		},
+		{
+			"name": "Show all by authorized user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/AddAndShowServlet?users_uuid=b7aeba0d-af13-4366-91d2-e37cd47eac28",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"AddAndShowServlet"
+					],
+					"query": [
+						{
+							"key": "users_uuid",
+							"value": "b7aeba0d-af13-4366-91d2-e37cd47eac28"
+						}
+					]
+				},
+				"description": "Show all (correct uuid)"
+			},
+			"response": []
+		},
+		{
+			"name": "Show all (uuid=null)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/AddAndShowServlet?",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"AddAndShowServlet"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
+					]
+				},
+				"description": "Show all (uuid=null)"
+			},
+			"response": []
+		},
+		{
+			"name": "Show all (incorrect uuid)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/AddAndShowServlet?uuid=4852230a-0000-0000-8da2-89353a4a83ca",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"AddAndShowServlet"
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "4852230a-0000-0000-8da2-89353a4a83ca"
+						}
+					]
+				},
+				"description": "Show all (incorrect uuid)"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
