@@ -8,16 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
     private static final Logger log = LoggerFactory.getLogger(AddAndShowServlet.class);
-    static List<String> lines = new ArrayList<>();
-
+    static ExecutorService executeIt = Executors.newFixedThreadPool(5);
 
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(8081)) {
@@ -26,30 +25,8 @@ public class Server {
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("Client connected!");
-                lines = new ArrayList<>();
 
-
-                try (BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-                     PrintWriter output = new PrintWriter(socket.getOutputStream())) {
-
-                    // ждем первой строки запроса
-                    while (!input.ready()) ;
-
-                    // считываем и печатаем все что было отправлено клиентом
-                    System.out.println();
-                    while (input.ready()) {
-                        String line = input.readLine();
-                        lines.add(line);
-                        System.out.println(line);
-                    }
-
-                    HttpServletRequest request = createHttpServletRequest(lines);
-                    sendRequestToServlet((MyRequest) request, output);
-
-                    output.flush();
-
-                    System.out.println("Client disconnected!");
-                }
+                executeIt.execute(new Client(socket));
             }
         } catch (IOException ex) {
             ex.printStackTrace();
