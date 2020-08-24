@@ -20,8 +20,7 @@ public class ObjectMapper {
     private Gson gson = new Gson();
 
     public Product jsonToProduct(String json) {
-        Product product = gson.fromJson(json, Product.class);
-        return product;
+        return gson.fromJson(json, Product.class);
     }
 
     public Product requestToProduct(ServletRequest request) {
@@ -45,8 +44,7 @@ public class ObjectMapper {
     }
 
     public User jsonToUser(String json) {
-        User user = gson.fromJson(json, User.class);
-        return user;
+        return gson.fromJson(json, User.class);
     }
 
     public String userUuidToJson(User user) {
@@ -54,12 +52,12 @@ public class ObjectMapper {
         return gson.toJson(user.getUuid());
     }
 
-    public JSONObject requestParamsToJSON(ServletRequest req) {
+    public JSONObject requestParamsToJSON(ServletRequest request) {
         JSONObject jsonObject = new JSONObject();
-        Map<String, String[]> params = req.getParameterMap();
+        Map<String, String[]> params = request.getParameterMap();
         for (Map.Entry<String, String[]> entry : params.entrySet()) {
-            String[] v = entry.getValue();
-            Object o = (v.length == 1) ? v[0] : v;
+            String[] values = entry.getValue();
+            Object o = (values.length == 1) ? values[0] : values;
             jsonObject.put(entry.getKey(), o);
         }
         return jsonObject;

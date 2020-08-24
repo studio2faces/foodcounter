@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
-import java.io.IOException;
-
 
 @Component
 public class AuthorizationFilter implements Filter {
@@ -31,7 +29,7 @@ public class AuthorizationFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)  {
         JSONObject jsonObject = mapper.requestParamsToJSON(request);
         String uuid = (String) jsonObject.get("uuid");
 
