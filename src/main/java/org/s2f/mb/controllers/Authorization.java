@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/users")
@@ -25,7 +27,7 @@ public class Authorization extends HttpServlet {
     }
 
     @PostMapping(path = "/getUsersUuid", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getUserUuid(@RequestBody User user) {
+    public String getUserUuid(@RequestBody User user, HttpServletResponse response) {
 
         user.setUuid(databaseHandler.getUuidByLogin(user.getLogin()));
         log.debug("Authorization: {}", user.toString());
@@ -34,11 +36,23 @@ public class Authorization extends HttpServlet {
             log.info("New user.");
             user.generateUuid();
             databaseHandler.addUser(user);
+
+            Cookie cookie = new Cookie(user.getLogin(), user.getUuid());
+            cookie.setDomain("127.0.0.1");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(60 * 60 * 24 * 365);
+            response.addCookie(cookie);
+
             log.debug("New user - {}", user.toString());
         } else {
+            Cookie cookie = new Cookie("uuid", user.getUuid());
+            cookie.setDomain("127.0.0.1");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(60 * 60 * 24 * 365);
+            response.addCookie(cookie);
+
             log.debug("User exists - {}", user.toString());
         }
-
         return user.getUuid();
     }
 }

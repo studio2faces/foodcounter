@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Component
 public class ObjectMapper {
-    private static final Logger log = LoggerFactory.getLogger(ObjectMapper.class);
+   /* private static final Logger log = LoggerFactory.getLogger(ObjectMapper.class);
     private Gson gson = new Gson();
 
     public Product jsonToProduct(String json) {
@@ -65,5 +65,5 @@ public class ObjectMapper {
 
     public String getJsonDataFromList(List<Product> products) {
         return gson.toJson(products);
-    }
+    }*/
 }
