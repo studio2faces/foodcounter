@@ -13,7 +13,7 @@ public class User {
 
     public User(String login) {
         this.login = login;
-        uuid = UUID.randomUUID().toString();
+        uuid = null;
     }
 
     public void generateUuid() {

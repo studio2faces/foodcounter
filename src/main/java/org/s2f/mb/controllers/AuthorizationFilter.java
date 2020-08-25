@@ -1,4 +1,4 @@
-package org.s2f.mb.servlets;
+package org.s2f.mb.controllers;
 
 import org.json.simple.JSONObject;
 import org.s2f.mb.model.dto.User;
@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.*;
 
@@ -29,7 +30,7 @@ public class AuthorizationFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)  {
+    public void doFilter(@RequestBody ServletRequest request, ServletResponse response, FilterChain filterChain)  {
         JSONObject jsonObject = mapper.requestParamsToJSON(request);
         String uuid = (String) jsonObject.get("uuid");
 

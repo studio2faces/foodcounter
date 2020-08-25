@@ -27,7 +27,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
         super.onStartup(servletContext);
 
         servletContext.addFilter("authorizationFilter", new DelegatingFilterProxy("authorizationFilter"))
-                .addMappingForUrlPatterns(null, false, "/AddAndShowServlet");
+                .addMappingForUrlPatterns(null, false, "/fridge/*");
 
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
         encodingFilter.setEncoding("UTF-8");
