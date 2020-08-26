@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @Component
 public class AuthorizationFilter implements Filter {
@@ -22,7 +23,7 @@ public class AuthorizationFilter implements Filter {
     }
 
     @Autowired
-    public AuthorizationFilter( DatabaseHandler databaseHandler) {
+    public AuthorizationFilter(DatabaseHandler databaseHandler) {
         this.databaseHandler = databaseHandler;
     }
 
@@ -31,25 +32,34 @@ public class AuthorizationFilter implements Filter {
         String uuid = null;
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        Cookie[] cookies = httpServletRequest.getCookies();
-        for (Cookie cookie : cookies){
-           if (cookie.getName().equals("uuid")){
-               uuid=cookie.getValue();
-           }
-        }
-        System.out.println(uuid);
-
-        if (uuid != null) {
-            try {
-                User loggedUser = databaseHandler.getUserByUuid(uuid);
-                log.debug("Authorized {}", loggedUser.toString());
-                LocalUser.setLoggedUser(loggedUser);
-                filterChain.doFilter(request, response);
-            } catch (Exception e) {
-                log.debug("Incorrect uuid.");
+        try {
+            Cookie[] cookies = httpServletRequest.getCookies();
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("uuid")) {
+                    uuid = cookie.getValue();
+                }
             }
-        } else {
+            System.out.println(uuid);
+
+            if (uuid != null) {
+                try {
+                    User loggedUser = databaseHandler.getUserByUuid(uuid);
+                    log.debug("Authorized {}", loggedUser.toString());
+                    LocalUser.setLoggedUser(loggedUser);
+
+                    filterChain.doFilter(request, response);
+                } catch (Exception e) {
+                    log.debug("Incorrect uuid.");
+                    response.getWriter().write("No user in DB with uuid " + uuid);
+                }
+            }
+        } catch (Exception e) {
             log.error("Uuid is null.");
+            try {
+                response.getWriter().write("Uuid is null.");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
     }
 

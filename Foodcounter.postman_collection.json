@@ -7,23 +7,43 @@
 	"item": [
 		{
 			"name": "Authorization",
+			"protocolProfileBehavior": {
+				"disableCookies": false
+			},
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "uuid=null; Path=/getUsersUuid; Domain=127.0.0.1; Expires=Wed, 25 Aug 2021 14:47:43 GMT;",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"login\": \"Dasha\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:8888/AuthorizationServlet?login=Dasha",
+					"raw": "http://localhost:8080/users/getUsersUuid",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8888",
+					"port": "8080",
 					"path": [
-						"AuthorizationServlet"
+						"users",
+						"getUsersUuid"
 					],
 					"query": [
 						{
 							"key": "login",
-							"value": "Dasha"
+							"value": "Dasha",
+							"disabled": true
 						}
 					]
 				},
@@ -33,81 +53,75 @@
 		},
 		{
 			"name": "Add product",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8888/AddAndShowServlet?name=Milk&weight=200&price=80&kcal=500&users_uuid=4856190a-03c6-4c7c-8da2-89353a4a83ca",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8888",
-					"path": [
-						"AddAndShowServlet"
-					],
-					"query": [
-						{
-							"key": "name",
-							"value": "Milk"
-						},
-						{
-							"key": "weight",
-							"value": "200"
-						},
-						{
-							"key": "price",
-							"value": "80"
-						},
-						{
-							"key": "kcal",
-							"value": "500"
-						},
-						{
-							"key": "users_uuid",
-							"value": "4856190a-03c6-4c7c-8da2-89353a4a83ca"
-						}
-					]
-				},
-				"description": "Add a product"
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cbeda739-40d4-4028-aa3d-b41d7212606f",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
 			},
-			"response": []
-		},
-		{
-			"name": "Add product Socket",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "uuid=4856190a-03c6-4c7c-8da2-89353a4a83ca; Path=/fridge/addProduct; Domain=127.0.0.1; Expires=Wed, 25 Aug 2021 14:36:22 GMT;",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"Candy\",\r\n        \"weight\": 200,\r\n        \"price\": 80,\r\n        \"kcal\": 500,\r\n        \"uuid\": \"4856190a-03c6-4c7c-8da2-89353a4a83ca\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:8888/AddAndShowServlet?name=Milk&weight=200&price=80&kcal=500&users_uuid=4856190a-03c6-4c7c-8da2-89353a4a83ca",
+					"raw": "http://localhost:8080/fridge/addProduct",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8888",
+					"port": "8080",
 					"path": [
-						"AddAndShowServlet"
+						"fridge",
+						"addProduct"
 					],
 					"query": [
 						{
 							"key": "name",
-							"value": "Milk"
+							"value": "Orange",
+							"disabled": true
 						},
 						{
 							"key": "weight",
-							"value": "200"
+							"value": "200",
+							"disabled": true
 						},
 						{
 							"key": "price",
-							"value": "80"
+							"value": "80",
+							"disabled": true
 						},
 						{
 							"key": "kcal",
-							"value": "500"
+							"value": "500",
+							"disabled": true
 						},
 						{
-							"key": "users_uuid",
-							"value": "4856190a-03c6-4c7c-8da2-89353a4a83ca"
+							"key": "uuid",
+							"value": "4856190a-03c6-4c7c-8da2-89353a4a83ca",
+							"disabled": true
 						}
 					]
 				},
@@ -119,21 +133,29 @@
 			"name": "Show all by authorized user",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "uuid=b7aeba0d-af13-4366-91d2-e37cd47eac28; Path=/fridge/show; Domain=127.0.0.1; Expires=Wed, 25 Aug 2021 14:48:39 GMT;",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:8888/AddAndShowServlet?users_uuid=b7aeba0d-af13-4366-91d2-e37cd47eac28",
+					"raw": "http://localhost:8080/fridge/show",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8888",
+					"port": "8080",
 					"path": [
-						"AddAndShowServlet"
+						"fridge",
+						"show"
 					],
 					"query": [
 						{
-							"key": "users_uuid",
-							"value": "b7aeba0d-af13-4366-91d2-e37cd47eac28"
+							"key": "uuid",
+							"value": "b7aeba0d-af13-4366-91d2-e37cd47eac28",
+							"disabled": true
 						}
 					]
 				},
@@ -147,14 +169,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8888/AddAndShowServlet?",
+					"raw": "http://localhost:8080/fridge/show?",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8888",
+					"port": "8080",
 					"path": [
-						"AddAndShowServlet"
+						"fridge",
+						"show"
 					],
 					"query": [
 						{
@@ -171,21 +194,29 @@
 			"name": "Show all (incorrect uuid)",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "uuid=4852230a-0000-0000-8da2-89353a4a83ca; Path=/fridge/show; Domain=127.0.0.1; Expires=Thu, 26 Aug 2021 09:14:18 GMT;",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:8888/AddAndShowServlet?uuid=4852230a-0000-0000-8da2-89353a4a83ca",
+					"raw": "http://localhost:8080/fridge/show",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8888",
+					"port": "8080",
 					"path": [
-						"AddAndShowServlet"
+						"fridge",
+						"show"
 					],
 					"query": [
 						{
 							"key": "uuid",
-							"value": "4852230a-0000-0000-8da2-89353a4a83ca"
+							"value": "4852230a-0000-0000-8da2-89353a4a83ca",
+							"disabled": true
 						}
 					]
 				},

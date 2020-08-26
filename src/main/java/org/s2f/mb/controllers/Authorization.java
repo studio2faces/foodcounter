@@ -39,6 +39,7 @@ public class Authorization extends HttpServlet {
 
             Cookie cookie = new Cookie(user.getLogin(), user.getUuid());
             cookie.setDomain("127.0.0.1");
+            cookie.setPath("/getUsersUuid");
             cookie.setHttpOnly(true);
             cookie.setMaxAge(60 * 60 * 24 * 365);
             response.addCookie(cookie);
@@ -47,6 +48,7 @@ public class Authorization extends HttpServlet {
         } else {
             Cookie cookie = new Cookie("uuid", user.getUuid());
             cookie.setDomain("127.0.0.1");
+            cookie.setPath("/getUsersUuid");
             cookie.setHttpOnly(true);
             cookie.setMaxAge(60 * 60 * 24 * 365);
             response.addCookie(cookie);
