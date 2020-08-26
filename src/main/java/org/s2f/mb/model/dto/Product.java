@@ -1,6 +1,5 @@
 package org.s2f.mb.model.dto;
 
-
 public class Product {
     private String name;
     private int weight;

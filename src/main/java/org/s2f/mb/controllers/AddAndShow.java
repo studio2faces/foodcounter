@@ -8,9 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -18,7 +15,7 @@ import java.util.List;
 @RequestMapping("/fridge")
 public class AddAndShow {
     private static final Logger log = LoggerFactory.getLogger(AddAndShow.class);
-    private  DatabaseHandler databaseHandler;
+    private final DatabaseHandler databaseHandler;
 
     @Autowired
     public AddAndShow(DatabaseHandler databaseHandler) {
@@ -31,7 +28,6 @@ public class AddAndShow {
         product.setCooked(false);
         log.debug("{} is created.", product);
         databaseHandler.addProduct(product);
-
 
         return product;
     }

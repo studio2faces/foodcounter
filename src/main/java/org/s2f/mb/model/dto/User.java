@@ -3,7 +3,7 @@ package org.s2f.mb.model.dto;
 import java.util.UUID;
 
 public class User {
-    private String login;
+    private final String login;
     private String uuid;
 
     public User(String login, String uuid) {
