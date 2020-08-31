@@ -7,18 +7,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class AuthorizationFilter implements Filter {
+public class AuthorizationFilter extends HttpFilter {
     private static final Logger log = LoggerFactory.getLogger(AuthorizationFilter.class);
-    private DatabaseHandler databaseHandler;
-
-    public AuthorizationFilter() {
-    }
+    private final DatabaseHandler databaseHandler;
 
     @Autowired
     public AuthorizationFilter(DatabaseHandler databaseHandler) {
@@ -26,12 +26,11 @@ public class AuthorizationFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) {
+    protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String uuid = null;
 
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         try {
-            Cookie[] cookies = httpServletRequest.getCookies();
+            Cookie[] cookies = request.getCookies();
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("uuid")) {
                     uuid = cookie.getValue();
@@ -47,25 +46,12 @@ public class AuthorizationFilter implements Filter {
 
                     filterChain.doFilter(request, response);
                 } catch (Exception e) {
-                    log.debug("Incorrect uuid.");
-                    response.getWriter().write("No user in DB with uuid " + uuid);
+                    log.debug("Incorrect uuid. No user in DB with uuid {}", uuid);
                 }
             }
         } catch (Exception e) {
             log.error("Uuid is null.");
-            try {
-                response.getWriter().write("Uuid is null.");
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
         }
     }
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
-
-    @Override
-    public void destroy() {
-    }
 }

@@ -13,12 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/fridge")
-public class AddAndShow {
-    private static final Logger log = LoggerFactory.getLogger(AddAndShow.class);
+public class FridgeController {
+    private static final Logger log = LoggerFactory.getLogger(FridgeController.class);
     private final DatabaseHandler databaseHandler;
 
     @Autowired
-    public AddAndShow(DatabaseHandler databaseHandler) {
+    public FridgeController(DatabaseHandler databaseHandler) {
         this.databaseHandler = databaseHandler;
     }
 
