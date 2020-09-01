@@ -36,9 +36,8 @@ public class AuthorizationFilter extends HttpFilter {
                     uuid = cookie.getValue();
                 }
             }
-            System.out.println(uuid);
-
-            if (uuid != null) {
+            if (uuid == null) log.debug("Uuid is null.");
+            else {
                 try {
                     User loggedUser = databaseHandler.getUserByUuid(uuid);
                     log.debug("Authorized {}", loggedUser.toString());
@@ -50,8 +49,7 @@ public class AuthorizationFilter extends HttpFilter {
                 }
             }
         } catch (Exception e) {
-            log.error("Uuid is null.");
+            log.error("An exception was thrown.", e);
         }
     }
-
 }

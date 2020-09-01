@@ -25,7 +25,7 @@ public class AuthController {
         this.databaseHandler = databaseHandler;
     }
 
-    @PostMapping(path = "/getUsersUuid", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping( consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getUserUuid(@RequestBody User user, HttpServletResponse response) {
 
         user.setUuid(databaseHandler.getUuidByLogin(user.getLogin()));

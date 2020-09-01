@@ -22,7 +22,7 @@ public class FridgeController {
         this.databaseHandler = databaseHandler;
     }
 
-    @PostMapping(path = "/addProduct", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Product addProduct(@RequestBody Product product) throws IOException {
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         product.setCooked(false);
@@ -32,7 +32,7 @@ public class FridgeController {
         return product;
     }
 
-    @GetMapping(path = "/show", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Product> showAll() {
         return databaseHandler.getAllProductsByUuid(LocalUser.getLoggedUser().getUuid());
     }
