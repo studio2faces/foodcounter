@@ -1,14 +1,16 @@
 package org.s2f.mb.controllers;
 
-import org.s2f.mb.model.dto.User;
+//import org.s2f.mb.service.db.DatabaseHandler;
+import org.s2f.mb.model.entity.User;
 import org.s2f.mb.service.LocalUser;
-import org.s2f.mb.service.db.DatabaseHandler;
+import org.s2f.mb.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -18,15 +20,18 @@ import java.io.IOException;
 @Component
 public class AuthorizationFilter extends HttpFilter {
     private static final Logger log = LoggerFactory.getLogger(AuthorizationFilter.class);
-    private final DatabaseHandler databaseHandler;
+   /* private final DatabaseHandler databaseHandler;
 
     @Autowired
     public AuthorizationFilter(DatabaseHandler databaseHandler) {
         this.databaseHandler = databaseHandler;
-    }
+    }*/
+
+    @Autowired
+    public UserService userService;
 
     @Override
-    protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)  {
         String uuid = null;
 
         try {
@@ -36,10 +41,11 @@ public class AuthorizationFilter extends HttpFilter {
                     uuid = cookie.getValue();
                 }
             }
-            if (uuid == null) log.debug("Uuid is null.");
-            else {
+            if (uuid == null) {
+                log.debug("Uuid is null.");
+            } else {
                 try {
-                    User loggedUser = databaseHandler.getUserByUuid(uuid);
+                    User loggedUser = userService.getUserByUuid(uuid);
                     log.debug("Authorized {}", loggedUser.toString());
                     LocalUser.setLoggedUser(loggedUser);
 

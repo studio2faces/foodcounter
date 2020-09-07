@@ -1,6 +1,6 @@
 package org.s2f.mb.service;
 
-import org.s2f.mb.model.dto.User;
+import org.s2f.mb.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

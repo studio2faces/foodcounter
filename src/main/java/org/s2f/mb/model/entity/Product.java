@@ -1,12 +1,36 @@
-package org.s2f.mb.model.dto;
+package org.s2f.mb.model.entity;
 
-public class Product {
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "food")
+public class Product implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "weight")
     private int weight;
+
+    @Column(name = "price")
     private double price;
+
+    @Column(name = "kcal")
     private int kcal; //by 100g
+
+    @Column(name = "isCooked")
     private boolean isCooked;
+
+    @Column(name = "uuid")
     private String uuid;
+
+    public Product() {
+    }
 
     public Product(String name, int weight, double price, int kcal, boolean isCooked, String uuid) {
         this.name = name;

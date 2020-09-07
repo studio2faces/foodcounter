@@ -25,6 +25,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
+        servletContext.setInitParameter("spring.profiles.active", "prod");
 
         servletContext.addFilter("authorizationFilter", new DelegatingFilterProxy("authorizationFilter"))
                 .addMappingForUrlPatterns(null, false, "/fridge/*");
@@ -34,6 +35,6 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
         encodingFilter.setForceEncoding(true);
 
         servletContext.addFilter("encodingFilter", encodingFilter)
-        .addMappingForUrlPatterns(null, false, "/*");
+                .addMappingForUrlPatterns(null, false, "/*");
     }
 }
