@@ -26,6 +26,8 @@ public class FridgeController {
     public Product addProduct(@RequestBody Product product) throws IOException {
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         product.setCooked(false);
+        product.setPriceByOneGramm(product.countPriceByOneGramm());
+        product.setUuid(LocalUser.getLoggedUser().getUuid());
         log.debug("{} is created.", product);
         return productService.save(product);
     }

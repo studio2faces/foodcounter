@@ -24,13 +24,13 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public Product persist(Product product) {
-        return (Product) getCurrentSession().save(product);
+    public void persist(Product product) {
+        getCurrentSession().persist(product);
     }
 
     @Override
     public List<Product> findAllByUuid(String uuid) {
-        Query<Product> query = getCurrentSession().createQuery("select p from Product p where p.uuid = :uuid", Product.class);
+        Query<Product> query = getCurrentSession().createQuery("from Product where uuid = :uuid", Product.class);
         query.setParameter("uuid", uuid);
         return query.list();
     }

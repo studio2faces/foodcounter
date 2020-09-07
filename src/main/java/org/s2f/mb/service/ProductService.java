@@ -16,7 +16,8 @@ public class ProductService {
 
     public Product save(Product product) {
         try {
-            return productDAO.persist(product);
+            productDAO.persist(product);
+            return product;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

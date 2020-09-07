@@ -20,6 +20,9 @@ public class Product implements Serializable {
     @Column(name = "price")
     private double price;
 
+    @Column(name = "priceByOneGramm")
+    private double priceByOneGramm;
+
     @Column(name = "kcal")
     private int kcal; //by 100g
 
@@ -32,37 +35,56 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(String name, int weight, double price, int kcal, boolean isCooked, String uuid) {
-        this.name = name;
-        this.weight = weight;
-        this.price = price;
-        this.kcal = kcal;
-        this.isCooked = isCooked;
-        this.uuid = uuid;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getWeight() {
         return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 
     public double getPrice() {
         return price;
     }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getPriceByOneGramm() {
+        return priceByOneGramm;
+    }
+
+    public void setPriceByOneGramm(double priceByOneGramm) {
+        this.priceByOneGramm = priceByOneGramm;
+    }
+
     public int getKcal() {
         return kcal;
     }
 
-    public Boolean getIsCooked() {
-        return isCooked;
+    public void setKcal(int kcal) {
+        this.kcal = kcal;
     }
 
-    public double priceByOneGramm() {
-        return this.price / this.weight;
+    public boolean isCooked() {
+        return isCooked;
     }
 
     public void setCooked(boolean cooked) {
@@ -71,6 +93,14 @@ public class Product implements Serializable {
 
     public String getUuid() {
         return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public double countPriceByOneGramm() {
+        return this.price / this.weight;
     }
 
     @Override

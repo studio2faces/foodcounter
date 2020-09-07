@@ -54,8 +54,8 @@ public class AuthorizationFilter extends HttpFilter {
                     log.debug("Incorrect uuid. No user in DB with uuid {}", uuid);
                 }
             }
-        } catch (Exception e) {
-            log.error("An exception was thrown.", e);
+        } catch (NullPointerException e) {
+            log.error("User is null", e);
         }
     }
 }

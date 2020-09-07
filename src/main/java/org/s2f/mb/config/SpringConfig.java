@@ -2,7 +2,9 @@ package org.s2f.mb.config;
 
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
+import org.hibernate.service.ServiceRegistry;
 import org.s2f.mb.controllers.AuthController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +69,7 @@ public class SpringConfig implements WebMvcConfigurer {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/fridge_counter_db?useUnicode=true&serverTimezone=UTC&useSSL=true&verifyServerCertificate=false");
+      //  dataSource.setUrl("jdbc:mysql://localhost:3306/fridge_counter_db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
         dataSource.setUsername("root");
         dataSource.setPassword("root");
         return dataSource;
@@ -80,12 +83,20 @@ public class SpringConfig implements WebMvcConfigurer {
 
         return transactionManager;
     }*/
-    @Bean
+    /*@Bean
     @Autowired
     public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
         HibernateTransactionManager txManager = new HibernateTransactionManager();
         txManager.setSessionFactory(sessionFactory);
         return txManager;
+    }*/
+
+    @Bean
+    public PlatformTransactionManager hibernateTransactionManager() {
+        HibernateTransactionManager transactionManager
+                = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+        return transactionManager;
     }
 
     @Bean
@@ -98,7 +109,7 @@ public class SpringConfig implements WebMvcConfigurer {
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         properties.put("hibernate.show_sql", true);
      //   properties.put("current_session_context_class", "thread");
-     //   properties.put("hibernate.enable_lazy_load_no_trans", true);
+     //  properties.put("hibernate.enable_lazy_load_no_trans", true);
         return properties;
     }
 }
