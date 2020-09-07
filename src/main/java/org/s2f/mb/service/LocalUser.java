@@ -18,5 +18,4 @@ public class LocalUser {
         LOCAL_USER.set(user);
         log.debug("LocalUser = {}", LOCAL_USER.get().getLogin());
     }
-
 }

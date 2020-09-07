@@ -1,6 +1,5 @@
 package org.s2f.mb.controllers;
 
-
 import org.s2f.mb.model.entity.Product;
 import org.s2f.mb.service.LocalUser;
 
@@ -23,7 +22,7 @@ public class FridgeController {
     public ProductService productService;
 
     @PostMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Product addProduct(@RequestBody Product product) throws IOException {
+    public Product addProduct(@RequestBody Product product) {
         // установила isCooked=false прямо в сервлете add, потому что сервлет готовки будет ставить true
         product.setCooked(false);
         product.setPriceByOneGramm(product.countPriceByOneGramm());

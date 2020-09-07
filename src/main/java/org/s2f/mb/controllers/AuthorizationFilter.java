@@ -1,6 +1,5 @@
 package org.s2f.mb.controllers;
 
-//import org.s2f.mb.service.db.DatabaseHandler;
 import org.s2f.mb.model.entity.User;
 import org.s2f.mb.service.LocalUser;
 import org.s2f.mb.service.UserService;
@@ -10,22 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Component
 public class AuthorizationFilter extends HttpFilter {
     private static final Logger log = LoggerFactory.getLogger(AuthorizationFilter.class);
-   /* private final DatabaseHandler databaseHandler;
-
-    @Autowired
-    public AuthorizationFilter(DatabaseHandler databaseHandler) {
-        this.databaseHandler = databaseHandler;
-    }*/
 
     @Autowired
     public UserService userService;

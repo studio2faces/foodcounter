@@ -5,7 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.s2f.mb.dao.ProductDAO;
 import org.s2f.mb.model.entity.Product;
-import org.s2f.mb.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

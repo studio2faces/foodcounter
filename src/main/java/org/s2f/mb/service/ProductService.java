@@ -27,6 +27,4 @@ public class ProductService {
     public List<Product> getAllByUuid(String uuid) {
         return productDAO.findAllByUuid(uuid);
     }
-
-
 }

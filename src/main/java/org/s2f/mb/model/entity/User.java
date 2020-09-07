@@ -1,6 +1,5 @@
 package org.s2f.mb.model.entity;
 
-import org.hibernate.annotations.Proxy;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Column;
