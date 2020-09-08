@@ -20,10 +20,10 @@ public class UserService {
     }
 
     public User findByLogin(String login) {
-        User user = userDAO.findByLogin(login);
-        if (user == null) {
-            return new User(login);
-        }
+        User user = null;
+        if (userDAO.existsByLogin(login)) {
+            user = userDAO.findByLogin(login);
+        } else return new User(login);
         return user;
     }
 
@@ -32,6 +32,6 @@ public class UserService {
     }
 
     public void save(User user) {
-        userDAO.persist(user);
+        userDAO.save(user);
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProductDAO {
 
-    void persist(Product product);
+    Product save(Product product);
 
     List<Product> findAllByUuid(String uuid);
 }

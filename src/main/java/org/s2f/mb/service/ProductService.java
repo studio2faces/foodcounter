@@ -11,12 +11,13 @@ import java.util.List;
 @Service
 @Transactional
 public class ProductService {
+
     @Autowired
     ProductDAO productDAO;
 
     public Product save(Product product) {
         try {
-            productDAO.persist(product);
+            productDAO.save(product);
             return product;
         } catch (Exception e) {
             e.printStackTrace();

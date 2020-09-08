@@ -1,17 +1,18 @@
-package org.s2f.mb.dao;
+package org.s2f.mb.repository;
 
 import org.s2f.mb.model.entity.User;
-import org.s2f.mb.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserDAO {
+@Repository
+public interface UserRepository extends CrudRepository<User, String> {
 
-    User findByLogin(String login);
+    User findByLogin(String name);
 
     User findByUuid(String uuid);
 
     User save(User user);
 
     boolean existsByLogin(String login);
+
 }
