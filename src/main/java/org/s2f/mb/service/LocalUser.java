@@ -1,11 +1,10 @@
 package org.s2f.mb.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.s2f.mb.model.entity.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class LocalUser {
-    private static final Logger log = LoggerFactory.getLogger(LocalUser.class);
 
     private final static ThreadLocal<User> LOCAL_USER = new ThreadLocal<>();
 

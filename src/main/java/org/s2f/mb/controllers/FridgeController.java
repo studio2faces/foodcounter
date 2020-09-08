@@ -1,21 +1,20 @@
 package org.s2f.mb.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.s2f.mb.model.entity.Product;
 import org.s2f.mb.service.LocalUser;
 
 import org.s2f.mb.service.ProductService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/fridge")
 public class FridgeController {
-    private static final Logger log = LoggerFactory.getLogger(FridgeController.class);
 
     @Autowired
     public ProductService productService;

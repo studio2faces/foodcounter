@@ -1,10 +1,17 @@
 package org.s2f.mb.model.entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "food")
+@Transactional
+@Data
+@NoArgsConstructor
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,86 +39,7 @@ public class Product implements Serializable {
     @Column(name = "uuid")
     private String uuid;
 
-    public Product() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
-
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public double getPriceByOneGramm() {
-        return priceByOneGramm;
-    }
-
-    public void setPriceByOneGramm(double priceByOneGramm) {
-        this.priceByOneGramm = priceByOneGramm;
-    }
-
-    public int getKcal() {
-        return kcal;
-    }
-
-    public void setKcal(int kcal) {
-        this.kcal = kcal;
-    }
-
-    public boolean isCooked() {
-        return isCooked;
-    }
-
-    public void setCooked(boolean cooked) {
-        isCooked = cooked;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
     public double countPriceByOneGramm() {
         return this.price / this.weight;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", weight=" + weight +
-                ", price=" + price +
-                ", kcal=" + kcal +
-                ", isCooked=" + isCooked +
-                ", uuid=" + uuid +
-                '}';
     }
 }

@@ -12,8 +12,12 @@ import java.util.List;
 @Transactional
 public class ProductService {
 
+    private final ProductDAO productDAO;
+
     @Autowired
-    ProductDAO productDAO;
+    public ProductService(ProductDAO productDAO) {
+        this.productDAO = productDAO;
+    }
 
     public Product save(Product product) {
         try {

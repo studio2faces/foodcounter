@@ -1,5 +1,6 @@
 package org.s2f.mb.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.s2f.mb.model.entity.User;
 import org.s2f.mb.service.LocalUser;
 import org.s2f.mb.service.UserService;
@@ -15,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
+@Slf4j
 public class AuthorizationFilter extends HttpFilter {
-    private static final Logger log = LoggerFactory.getLogger(AuthorizationFilter.class);
 
     @Autowired
     public UserService userService;

@@ -1,10 +1,9 @@
 package org.s2f.mb.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.s2f.mb.model.entity.User;
 
 import org.s2f.mb.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
-    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     public UserService userService;
