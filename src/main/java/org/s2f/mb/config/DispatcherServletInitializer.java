@@ -9,12 +9,12 @@ import javax.servlet.*;
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[0];
+        return new Class[]{SpringConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{SpringConfig.class};
+        return new Class[0];
     }
 
     @Override
@@ -25,6 +25,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
+        servletContext.setInitParameter("spring.profiles.active", "prod");
 
         servletContext.addFilter("authorizationFilter", new DelegatingFilterProxy("authorizationFilter"))
                 .addMappingForUrlPatterns(null, false, "/fridge/*");
@@ -34,6 +35,6 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
         encodingFilter.setForceEncoding(true);
 
         servletContext.addFilter("encodingFilter", encodingFilter)
-        .addMappingForUrlPatterns(null, false, "/*");
+                .addMappingForUrlPatterns(null, false, "/*");
     }
 }
