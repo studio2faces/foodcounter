@@ -2,14 +2,12 @@ package org.s2f.mb.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "food")
-@Transactional
 @Data
 @NoArgsConstructor
 public class Product implements Serializable {

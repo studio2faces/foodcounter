@@ -17,7 +17,7 @@ import java.util.List;
 public class FridgeController {
 
     @Autowired
-    public ProductService productService;
+    private ProductService productService;
 
     @PostMapping(path = "/products", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Product addProduct(@RequestBody Product product) {

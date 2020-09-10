@@ -19,32 +19,34 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController {
 
     @Autowired
-    public UserService userService;
+    private UserService userService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public String getUserUuid(@RequestBody User user, HttpServletResponse response) {
         log.debug("Authorization: {}", user.getLogin());
 
-        Cookie cookie = null;
-        User userDb = null;
+        Cookie cookie;
+        User userDb;
+
+        String login = user.getLogin();
+
+        if (login == null) {
+            log.error("Login is null.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
 
         try {
-            String login = user.getLogin();
             userDb = userService.findByLogin(login);
-            if (userDb.getUuid() == null) {
-                log.info("New user.");
-                userDb.generateUuid();
-                userService.save(userDb);
-                cookie = new Cookie("uuid", userDb.getUuid());
-                log.debug("New user - {}", userDb.toString());
-            } else {
-                cookie = new Cookie("uuid", userDb.getUuid());
-                log.debug("User exists - {}", userDb.toString());
-            }
+            cookie = new Cookie("uuid", userDb.getUuid());
+            log.debug("User exists - {}", userDb.toString());
         } catch (NullPointerException e) {
-            log.error("Login is null.", e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            log.info("New user.");
+            userDb = new User(login);
+            userDb.generateUuid();
+            userService.save(userDb);
+            cookie = new Cookie("uuid", userDb.getUuid());
+            log.debug("New user - {}", userDb.toString());
         }
 
         cookie.setDomain("127.0.0.1");

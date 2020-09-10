@@ -19,11 +19,12 @@ public class UserService {
     }
 
     public User findByLogin(String login) {
-        User user = null;
         if (userDAO.existsByLogin(login)) {
-            user = userDAO.findByLogin(login);
-        } else return new User(login);
-        return user;
+            return userDAO.findByLogin(login);
+        } else {
+            log.debug("No users in DB with login {}.", login);
+            throw new NullPointerException();
+        }
     }
 
     public User getUserByUuid(String uuid) {
